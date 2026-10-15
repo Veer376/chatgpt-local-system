@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local System · HTML Preview Regression Lab</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <img class="brand-mark" src="./preview-badge.svg" alt="Preview regression badge">
+        <div>
+          <p class="eyebrow">Local System Fixture</p>
+          <h1>HTML Preview Regression Lab</h1>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span id="runtime-status" class="status-pill" data-testid="runtime-status">Booting JavaScript…</span>
+        <button id="theme-toggle" class="button secondary" type="button">Toggle contrast</button>
+      </div>
+    </header>
+
+    <main class="workspace-grid">
+      <aside class="sidebar card" aria-label="Regression sections">
+        <p class="section-label">Regression map</p>
+        <nav class="nav-stack">
+          <a href="#overview">Overview</a>
+          <a href="#interaction-lab">Interactions</a>
+          <a href="#notes-lab">Notes</a>
+          <a href="#scroll-lab">Scrollable feed</a>
+          <a href="#form-lab">Form controls</a>
+        </nav>
+
+        <div class="fixture-checks">
+          <p class="section-label">Expected</p>
+          <label><input type="checkbox" checked disabled> Relative CSS</label>
+          <label><input type="checkbox" checked disabled> Relative JS</label>
+          <label><input type="checkbox" checked disabled> Local SVG</label>
+          <label><input type="checkbox" checked disabled> Scroll regions</label>
+          <label><input type="checkbox" checked disabled> Editable inputs</label>
+        </div>
+
+        <div class="sidebar-footer">
+          <span>Viewport</span>
+          <strong id="viewport-label">—</strong>
+        </div>
+      </aside>
+
+      <section class="content-column">
+        <section id="overview" class="hero card">
+          <div>
+            <p class="eyebrow">Preview surface smoke test</p>
+            <h2>One page that tries to break the preview in useful ways.</h2>
+            <p class="lede">
+              This fixture intentionally combines nested scrolling, native form controls,
+              dynamically generated DOM, relative assets, keyboard shortcuts, and JavaScript state.
+            </p>
+          </div>
+          <div class="hero-badge" aria-hidden="true">
+            <span id="clock">--:--:--</span>
+            <small>live JS clock</small>
+          </div>
+        </section>
+
+        <section class="metric-grid" aria-label="Runtime metrics">
+          <article class="metric card">
+            <span>Counter</span>
+            <strong id="counter-value" data-testid="counter-value">0</strong>
+          </article>
+          <article class="metric card">
+            <span>Notes</span>
+            <strong id="note-count" data-testid="note-count">0</strong>
+          </article>
+          <article class="metric card">
+            <span>Events</span>
+            <strong id="event-count">0</strong>
+          </article>
+          <article class="metric card">
+            <span>Slider</span>
+            <strong id="slider-value">42%</strong>
+          </article>
+        </section>
+
+        <section id="interaction-lab" class="card section-card">
+          <div class="section-heading">
+            <div>
+              <p class="section-label">Interaction lab</p>
+              <h3>Buttons, tabs, dynamic state, and progress</h3>
+            </div>
+            <button id="reset-state" class="button ghost" type="button">Reset state</button>
+          </div>
+
+          <div class="interaction-grid">
+            <div class="counter-panel surface">
+              <span class="surface-title">Counter controls</span>
+              <div class="button-row">
+                <button id="decrement" class="button secondary" type="button">−1</button>
+                <button id="increment" class="button primary" type="button">+1</button>
+                <button id="burst" class="button secondary" type="button">+10 burst</button>
+              </div>
+              <p id="counter-message" class="muted">Try the buttons. JavaScript updates this message.</p>
+            </div>
+
+            <div class="slider-panel surface">
+              <label for="load-slider" class="surface-title">Synthetic workload</label>
+              <input id="load-slider" type="range" min="0" max="100" value="42">
+              <div class="progress-track" aria-hidden="true">
+                <div id="progress-fill" class="progress-fill"></div>
+              </div>
+              <p class="muted">The fill width and label must track the native range input.</p>
+            </div>
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="Regression detail tabs">
+            <button class="tab active" type="button" role="tab" aria-selected="true" data-tab="dom">DOM</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="events">Events</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-tab="sandbox">Sandbox</button>
+          </div>
+          <div id="tab-panel" class="tab-panel" role="tabpanel">
+            JavaScript should switch this text without navigating the iframe.
+          </div>
+        </section>
+
+        <section id="notes-lab" class="card section-card">
+          <div class="section-heading">
+            <div>
+              <p class="section-label">Notes lab</p>
+              <h3>Enter notes inside the preview</h3>
+            </div>
+            <button id="clear-notes" class="button ghost" type="button">Clear notes</button>
+          </div>
+
+          <div class="notes-layout">
+            <div class="note-composer surface">
+              <label for="note-input">Regression note</label>
+              <textarea id="note-input" data-testid="note-input" rows="7" placeholder="Type something here. Cmd/Ctrl + Enter adds it to the list."></textarea>
+              <div class="composer-footer">
+                <span id="character-count" class="muted">0 characters</span>
+                <button id="add-note" class="button primary" type="button">Add note</button>
+              </div>
+            </div>
+
+            <div class="note-list-shell surface">
+              <div class="surface-title-row">
+                <span class="surface-title">Session notes</span>
+                <span class="muted">in-memory only</span>
+              </div>
+              <ol id="note-list" class="note-list" data-testid="note-list">
+                <li class="empty-note">No notes yet.</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <section id="scroll-lab" class="card section-card">
+          <div class="section-heading">
+            <div>
+              <p class="section-label">Scroll lab</p>
+              <h3>Nested scroll area with generated rows</h3>
+            </div>
+            <div class="filter-row" aria-label="Activity filters">
+              <button class="chip active" type="button" data-filter="all">All</button>
+              <button class="chip" type="button" data-filter="pass">Pass</button>
+              <button class="chip" type="button" data-filter="warn">Warn</button>
+              <button class="chip" type="button" data-filter="info">Info</button>
+            </div>
+          </div>
+
+          <div id="activity-feed" class="activity-feed" data-testid="activity-feed" tabindex="0" aria-label="Scrollable activity feed"></div>
+        </section>
+
+        <section id="form-lab" class="card section-card">
+          <div class="section-heading">
+            <div>
+              <p class="section-label">Native controls</p>
+              <h3>Text, select, date, checkbox, and submission</h3>
+            </div>
+          </div>
+
+          <form id="profile-form" class="form-grid">
+            <label>
+              Display name
+              <input id="display-name" name="displayName" type="text" value="Preview Tester" autocomplete="off">
+            </label>
+            <label>
+              Scenario
+              <select id="scenario" name="scenario">
+                <option>Workspace preview</option>
+                <option>Relative asset loading</option>
+                <option>JavaScript execution</option>
+                <option>Keyboard input</option>
+              </select>
+            </label>
+            <label>
+              Regression date
+              <input id="regression-date" name="regressionDate" type="date">
+            </label>
+            <label class="checkbox-row">
+              <input id="strict-mode" name="strictMode" type="checkbox" checked>
+              Enable strict regression checks
+            </label>
+            <label class="full-span">
+              Free-form detail
+              <input id="free-form" name="freeForm" type="text" placeholder="Enter arbitrary text to verify typing/focus">
+            </label>
+            <div class="full-span form-actions">
+              <button id="capture-form" class="button primary" type="button">Capture synthetic event</button>
+              <output id="form-output" class="form-output">Nothing submitted yet.</output>
+            </div>
+          </form>
+        </section>
+
+        <footer class="footer card">
+          <span>Fixture version <strong>1.0</strong></span>
+          <span id="ready-marker" data-testid="ready-marker">Waiting for JS…</span>
+        </footer>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

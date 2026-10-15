@@ -1,0 +1,46 @@
+:root {
+  --ls-composer-font-family: var(--ls-ui-font-family, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  --ls-composer-font-size: var(--ls-ui-font-size, 13px);
+  --ls-composer-font-weight: 500;
+  --ls-composer-main-font-weight: 400;
+  --ls-composer-line-height: 1.2;
+  --ls-composer-font: var(--ls-composer-font-weight) var(--ls-composer-font-size)/var(--ls-composer-line-height) var(--ls-composer-font-family);
+  --ls-composer-surface: var(--ls-ui-surface, #fff);
+  --ls-composer-text: var(--ls-ui-text, #0d0d0d);
+}
+
+.composer-icon-button {
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  flex: 0 0 42px;
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 19px;
+  background: var(--ls-ui-control-bg);
+  color: var(--ls-ui-text);
+  font: inherit;
+  line-height: 1;
+  appearance: none;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.composer-icon-button:hover {
+  background: var(--ls-ui-control-hover);
+}
+
+.composer-icon-button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ls-ui-text) 28%, transparent);
+  outline-offset: 2px;
+}
+
+.composer-icon-button svg {
+  display: block;
+  width: 18px !important;
+  height: 18px !important;
+}

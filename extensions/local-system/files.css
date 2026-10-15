@@ -1,0 +1,73 @@
+:root {
+  --surface: var(--ls-ui-surface);
+  --text: var(--ls-ui-text);
+  --ls-file-picker-font-size: var(--ls-composer-font-size);
+  font: var(--ls-composer-font);
+}
+* { box-sizing: border-box; }
+html, body { width: 100%; margin: 0; overflow: hidden; background: transparent !important; color: var(--text); }
+.panel {
+  width: 100%;
+  padding: 7px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.results { max-height: 356px; overflow-y: auto; overscroll-behavior: contain; }
+.file {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 0 9px;
+  align-items: center;
+  min-height: 42px;
+  padding: 7px 9px;
+  border-radius: var(--ls-ui-radius-row);
+  cursor: default;
+  user-select: none;
+  font-family: var(--ls-composer-font-family);
+  font-size: var(--ls-file-picker-font-size);
+  font-weight: var(--ls-composer-main-font-weight);
+  line-height: var(--ls-composer-line-height);
+}
+.file:hover, .file.active { background: var(--ls-ui-active); }
+.file-icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  color: color-mix(in srgb, var(--text) 58%, transparent);
+  font: 650 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: -.25px;
+  opacity: .82;
+}
+.file-icon[data-kind="html"] { color: #e34f26; }
+.file-icon[data-kind="python"] { color: #3776ab; }
+.file-icon[data-kind="javascript"] { color: #c49a00; }
+.file-icon[data-kind="typescript"] { color: #3178c6; }
+.file-icon[data-kind="css"] { color: #1572b6; }
+.file-icon[data-kind="json"] { color: #7c7c7c; }
+.file-icon[data-kind="markdown"] { color: #64748b; }
+.file-icon[data-kind="shell"] { color: #4eaa25; }
+.file-icon[data-kind="java"] { color: #b07219; }
+.file-icon[data-kind="kotlin"] { color: #7f52ff; }
+.file-icon[data-kind="swift"] { color: #f05138; }
+.file-icon[data-kind="go"] { color: #00a2c7; }
+.file-icon[data-kind="rust"] { color: #b7410e; }
+.file-icon[data-kind="ruby"] { color: #cc342d; }
+.file-icon[data-kind="php"] { color: #777bb4; }
+.file-icon[data-kind="sql"] { color: #336791; }
+.file-icon[data-kind="xml"] { color: #e67e22; }
+.file-icon[data-kind="yaml"] { color: #cb171e; }
+.file-icon[data-kind="docker"] { color: #2496ed; }
+.file-icon[data-kind="config"] { color: #64748b; }
+.file-icon[data-kind="image"] { color: #8b5cf6; }
+.file-content { min-width: 0; }
+.name { font-family: var(--ls-composer-font-family); font-size: var(--ls-file-picker-font-size); font-weight: var(--ls-composer-main-font-weight); line-height: var(--ls-composer-line-height); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.path { margin-top: 2px; color:var(--ls-ui-muted); font-family: var(--ls-composer-font-family); font-size: var(--ls-ui-font-size-secondary); font-weight: 350; line-height: var(--ls-composer-line-height); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-meta { display: flex; align-items: center; justify-content: flex-end; gap: 7px; min-width: 0; }
+.source-tag { display: inline-flex; align-items: center; min-height: 20px; padding: 0 7px; border-radius: 999px; font-family: var(--ls-composer-font-family); font-size: var(--ls-ui-font-size-secondary); font-weight: var(--ls-composer-main-font-weight); line-height: 1; white-space: nowrap; background: color-mix(in srgb, currentColor 9%, transparent); }
+.source-tag[data-source="workspace"] { color: #7c3aed; }
+.source-tag[data-source="scratch"] { color: #0f9f8f; }
+.source-tag[data-source="root"] { color: #d97706; }
+.size { color:var(--ls-ui-faint); font-family: var(--ls-composer-font-family); font-size: var(--ls-ui-font-size-secondary); font-weight: 400; line-height: var(--ls-composer-line-height); white-space: nowrap; }
+.status { display: none; padding: 12px 13px; color:var(--ls-ui-muted); font-family: var(--ls-composer-font-family); font-size: var(--ls-ui-font-size-secondary); font-weight: var(--ls-composer-main-font-weight); line-height: var(--ls-composer-line-height); }
+.status.visible { display: block; }

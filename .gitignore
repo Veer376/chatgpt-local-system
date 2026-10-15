@@ -1,0 +1,18 @@
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.env
+coverage/
+*.log
+.preview-smoke/*-e2e-state/
+.DS_Store
+.playwright-cli/
+.preview-smoke/
+.safari-ios/
+opensource-todo.md
+# Private, machine-specific agent context and planning notes; not part of the public release.
+/AGENTS.md
+/memory.md
+/todo.md
+/docs/COMPUTER_USE_ISOLATION.md

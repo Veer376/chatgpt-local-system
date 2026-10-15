@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">Local System ~ls icon</title>
+  <defs>
+    <linearGradient id="bg" x1="8" y1="4" x2="120" y2="124" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#202020"/>
+      <stop offset="1" stop-color="#101010"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <rect x="1.25" y="1.25" width="125.5" height="125.5" rx="26.75" fill="none" stroke="#343434" stroke-width="2.5"/>
+
+  <path
+    d="M17 62C27 49.5 37 48.5 47 57C56 64.5 63.5 63 73 51.5"
+    fill="none"
+    stroke="#10A37F"
+    stroke-width="9"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <text
+    x="42"
+    y="92"
+    fill="#F7F7F7"
+    font-family="Menlo, Monaco, Consolas, 'Courier New', monospace"
+    font-size="68"
+    font-weight="700"
+    letter-spacing="-5"
+  >ls</text>
+</svg>

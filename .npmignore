@@ -1,0 +1,10 @@
+# Never distribute machine-specific material in published archives.
+/AGENTS.md
+/memory.md
+/todo.md
+/opensource-todo.md
+/docs/COMPUTER_USE_ISOLATION.md
+.env
+runtime.env
+*.pem
+*.key

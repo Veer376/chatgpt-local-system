@@ -1,0 +1,79 @@
+{
+  "name": "chatgpt-local-system",
+  "version": "1.0.0",
+  "description": "Production-grade, cross-platform MCP bridge from ChatGPT to a local workstation over OpenAI Secure MCP Tunnel.",
+  "type": "module",
+  "private": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Veer376/chatgpt-local-system.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build:apps": "node scripts/build-apps.mjs",
+    "build:extension": "esbuild extensions/local-system/highlight-entry.js --bundle --minify --format=iife --global-name=LocalHighlighter --outfile=extensions/local-system/vendor/highlight.bundle.js",
+    "safari:ios:prepare": "node scripts/prepare-safari-ios.mjs",
+    "safari:ios:refresh": "node scripts/safari-ios-refresh.mjs",
+    "safari:ios:watch": "node scripts/safari-ios-watch.mjs",
+    "safari:mobile:router": "node scripts/safari-mobile-router.mjs",
+    "build": "npm run build:apps && npm run build:extension",
+    "start": "npm run build && node src/server.js",
+    "start:stdio": "node src/stdio.js",
+    "start:all": "npm run build && node scripts/restart-all.mjs",
+    "restart:all": "npm run build && node scripts/restart-all.mjs",
+    "dev": "npm run build && node --watch src/server.js",
+    "doctor": "node src/doctor.js",
+    "smoke": "node scripts/smoke.mjs",
+    "test": "node scripts/run-tests.mjs",
+    "test:unit": "node scripts/run-tests.mjs unit",
+    "test:integration": "node scripts/run-tests.mjs integration",
+    "test:browser": "node scripts/run-tests.mjs browser",
+    "lint": "eslint .",
+    "check": "npm run lint && npm test",
+    "prepublishOnly": "npm run check"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/ext-apps": "^1.7.5",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@openai/agents": "^0.17.0",
+    "diff": "^8.0.4",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "highlight.js": "^11.12.0",
+    "ipaddr.js": "^2.2.0",
+    "pdfjs-dist": "^6.2.108",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "esbuild": "^0.25.12",
+    "eslint": "^9.39.2",
+    "globals": "^16.5.0",
+    "playwright-core": "^1.63.0"
+  },
+  "overrides": {
+    "uuid": "^11.1.1"
+  },
+  "files": [
+    "src",
+    "scripts",
+    "skills",
+    "docs",
+    "launchd",
+    ".env.example",
+    "README.md",
+    "LICENSE",
+    "extensions"
+  ],
+  "keywords": [
+    "chatgpt",
+    "mcp",
+    "secure-mcp-tunnel",
+    "codex",
+    "automation",
+    "cross-platform"
+  ]
+}

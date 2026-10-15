@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="ui-foundation.css">
+  <link rel="stylesheet" href="file-workspace.css">
+  <script src="vendor/highlight.bundle.js"></script>
+  <script src="shared-runtime.js"></script>
+  <script src="extension-api.js"></script>
+  <script src="file-workspace-pane-hover.js"></script>
+  <script src="file-workspace-live-sync.js"></script>
+  <script src="file-workspace.js" defer></script>
+</head>
+<body>
+  <main id="workspace" class="workspace tree-collapsed workspace-hydrating">
+    <div id="resize-handle" class="resize-handle" title="Resize workspace"></div>
+
+    <header id="workspace-toolbar" class="workspace-toolbar">
+      <button id="tree-pane-toggle" class="toolbar-button" type="button" aria-label="Toggle project panel" aria-expanded="false" aria-pressed="false" title="Toggle project panel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="2.25"/><path d="M9.5 4v16"/></svg>
+      </button>
+      <button id="project-name" class="workspace-project-name" type="button" aria-label="Choose project" title="Choose project">No project</button>
+      <button id="project-edit" class="toolbar-button" type="button" aria-label="Change project" title="Change project">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 19.5 4.1-.8L18.9 8.4a2.4 2.4 0 0 0-3.3-3.3L5.3 15.4l-.8 4.1Z"/><path d="m13.9 6.8 3.3 3.3"/></svg>
+      </button>
+      <button id="close-sidebar" class="toolbar-button" type="button" aria-label="Close workspace" title="Close workspace">
+        <svg viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></svg>
+      </button>
+    </header>
+
+    <div id="workspace-columns" class="workspace-columns">
+      <section id="tree-pane" class="pane tree-pane tree-collapsed">
+        <div class="left-panel-main">
+          <section id="left-files-panel" class="left-mode-panel" data-mode="files">
+            <div class="left-panel-header files-search-header">
+              <svg class="files-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
+              <input id="files-search-input" class="ls-ui-search-field" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Search files" aria-label="Search project files">
+            </div>
+            <div id="files-search-results" class="files-search-results" hidden>
+              <div id="files-search-status" class="files-search-status"></div>
+              <div id="files-search-list" class="files-search-list" role="listbox" aria-label="File search results"></div>
+            </div>
+            <div id="tree-body" class="tree-body">
+              <div id="project-tree-message" class="tree-message">Open a project to browse files.</div>
+              <div id="project-tree" class="project-tree" role="tree"></div>
+            </div>
+          </section>
+
+          <section id="left-git-panel" class="left-mode-panel" data-mode="git" hidden>
+            <div class="left-panel-header">
+              <span class="left-panel-title">Changes</span>
+              <span id="git-changes-count" class="git-changes-count">0</span>
+              <span id="git-branch" class="git-branch"></span>
+            </div>
+            <section id="git-changes-section" class="git-changes-section" hidden>
+              <button id="git-changes-toggle" class="git-changes-toggle" type="button" aria-expanded="true">
+                <svg class="git-changes-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+                <span class="git-changes-title">Working tree</span>
+                <span class="git-changes-count git-inline-count"></span>
+                <span class="git-branch git-inline-branch"></span>
+              </button>
+              <div id="git-changes-body" class="git-changes-body"></div>
+            </section>
+          </section>
+
+          <section id="left-search-panel" class="left-mode-panel search-panel" data-mode="search" hidden>
+            <div class="left-panel-header search-header">
+              <svg class="search-header-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
+              <input id="workspace-search-input" class="ls-ui-search-field" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Search workspace" aria-label="Search workspace">
+            </div>
+            <div id="workspace-search-status" class="workspace-search-status">Type to search across project files.</div>
+            <div id="workspace-search-results" class="workspace-search-results"></div>
+          </section>
+        </div>
+
+        <nav class="left-panel-toolbar" aria-label="Project panel">
+          <button id="left-mode-files" class="left-tool-button active" type="button" aria-label="Files" title="Files" aria-pressed="true">
+            <svg viewBox="0 0 24 24"><path d="M3.5 6.5h6l1.5 2h9.5v9H3.5z"/><path d="M3.5 6.5V5h6l1.5 2h9.5"/></svg>
+          </button>
+          <button id="left-mode-git" class="left-tool-button" type="button" aria-label="Changes" title="Changes" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="8" cy="19" r="2"/><path d="M6 7v5a7 7 0 0 0 7 7h3M8 17V9a2 2 0 0 1 2-2h6"/></svg>
+            <span id="left-git-badge" class="left-tool-badge" hidden>0</span>
+          </button>
+          <button id="full-text-search" class="left-tool-button" type="button" aria-label="Search" title="Search (⌘⇧F)" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
+          </button>
+          <button id="ui-settings-toggle" class="left-tool-button left-settings-button" type="button" aria-label="Settings" title="Settings" aria-haspopup="dialog" aria-expanded="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.86 2.86-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21H9.55v-.1A1.7 1.7 0 0 0 8.4 19.3a1.7 1.7 0 0 0-1.88.34l-.06.06-2.86-2.86.06-.06A1.7 1.7 0 0 0 4 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H2v-4h.3A1.7 1.7 0 0 0 4 8.4a1.7 1.7 0 0 0-.34-1.88l-.06-.06L6.46 3.6l.06.06A1.7 1.7 0 0 0 8.4 4a1.7 1.7 0 0 0 1-.6A1.7 1.7 0 0 0 9.8 2.3V2h4.05v.3A1.7 1.7 0 0 0 15 4a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.86 2.86-.06.06A1.7 1.7 0 0 0 19.4 8a1.7 1.7 0 0 0 .6 1 1.7 1.7 0 0 0 1.1.4h.9v4h-.9A1.7 1.7 0 0 0 19.4 15Z"/></svg>
+          </button>
+        </nav>
+
+        <div id="ui-settings-popover" class="workspace-settings-popover ls-ui-floating-surface" role="dialog" aria-label="Local System settings" hidden>
+          <section class="workspace-settings-section">
+            <div class="workspace-settings-title">UI visibility</div>
+            <label class="workspace-setting"><span>Skill pills</span><input type="checkbox" data-ui-setting="skills"><span class="workspace-setting-switch" aria-hidden="true"></span></label>
+            <label class="workspace-setting"><span>Todos</span><input type="checkbox" data-ui-setting="todos"><span class="workspace-setting-switch" aria-hidden="true"></span></label>
+            <label class="workspace-setting"><span>Embedded workspace</span><input type="checkbox" data-ui-setting="workspace"><span class="workspace-setting-switch" aria-hidden="true"></span></label>
+            <label class="workspace-setting"><span>Annotations</span><input type="checkbox" data-ui-setting="annotations"><span class="workspace-setting-switch" aria-hidden="true"></span></label>
+          </section>
+          <section class="workspace-settings-section">
+            <div class="workspace-settings-divider"></div>
+            <div class="workspace-settings-title">Editor</div>
+            <label class="workspace-setting"><span>Auto save</span><input id="auto-save-setting" type="checkbox" data-editor-setting="autoSave"><span class="workspace-setting-switch" aria-hidden="true"></span></label>
+          </section>
+          <section class="workspace-settings-section">
+            <div class="workspace-settings-divider"></div>
+            <div class="workspace-settings-title">Notifications</div>
+            <label class="workspace-setting"><span>Completion sound</span><input id="completion-sound-setting" type="checkbox" data-completion-setting="sound"><span class="workspace-setting-switch" aria-hidden="true"></span></label>
+          </section>
+          <section class="workspace-settings-section">
+            <div class="workspace-settings-divider"></div>
+            <div class="workspace-settings-title">Agent checkpoint</div>
+            <label class="workspace-setting"><span>Inject checkpoint message</span><input id="checkpoint-injection-setting" type="checkbox" data-checkpoint-setting="enabled"><span class="workspace-setting-switch" aria-hidden="true"></span></label>
+            <label class="workspace-setting-field">
+              <span>Checkpoint after</span>
+              <span class="workspace-setting-number-wrap"><input id="checkpoint-minutes-setting" class="workspace-setting-number" type="number" min="1" max="240" step="1" inputmode="numeric" data-checkpoint-setting="intervalMinutes"><span>min</span></span>
+            </label>
+          </section>
+
+          <section id="side-panel-site-settings" class="workspace-settings-section workspace-site-settings" hidden>
+            <div class="workspace-settings-divider"></div>
+            <div class="workspace-settings-title">Website access</div>
+            <div class="workspace-site-current">
+              <div class="workspace-site-copy">
+                <span class="workspace-site-label">Current website</span>
+                <strong id="current-site-name" class="workspace-site-name">Loading…</strong>
+              </div>
+              <button id="hide-current-site" class="workspace-site-action danger" type="button">Hide here</button>
+            </div>
+            <div class="workspace-settings-subtitle">Hidden websites</div>
+            <div id="hidden-sites-list" class="workspace-hidden-sites"></div>
+            <div id="hidden-sites-empty" class="workspace-hidden-sites-empty">No hidden websites</div>
+          </section>
+        </div>
+      </section>
+
+      <div
+        id="pane-splitter"
+        class="pane-splitter"
+        role="separator"
+        tabindex="0"
+        aria-orientation="vertical"
+        aria-label="Resize project panel"
+        aria-controls="tree-pane"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="50"
+        title="Resize project panel"
+      ></div>
+
+      <section id="editor-pane" class="pane editor-pane">
+        <div class="editor-pane-header">
+          <div id="tabs" class="tabs" role="tablist"></div>
+          <div id="file-action-bar" class="file-action-bar" hidden>
+            <div id="file-edit-status" class="file-edit-status" hidden></div>
+            <div class="file-actions">
+              <button id="cancel-file-edit" class="icon-button small" type="button" aria-label="Discard changes" title="Discard changes (Esc)" hidden>
+                <svg viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></svg>
+              </button>
+              <button id="save-file-edit" class="icon-button small primary" type="button" aria-label="Save file" title="Save file (⌘S)" hidden>
+                <svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>
+              </button>
+              <button id="refresh-file" class="icon-button small" type="button" aria-label="Refresh file" title="Refresh file from disk">
+                <svg viewBox="0 0 24 24"><path d="M20 6v5h-5M4 18v-5h5M18.2 10A7 7 0 0 0 6.5 6.5L4 9M5.8 14A7 7 0 0 0 17.5 17.5L20 15"/></svg>
+              </button>
+              <button id="copy-annotations" class="icon-button small" type="button" aria-label="Copy file annotations" title="Copy annotations for this file">
+                <svg viewBox="0 0 24 24"><path d="M8 8h10v10H8z"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/><path d="M11 11h4M11 14h4"/></svg>
+              </button>
+              <button id="preview-file" class="icon-button small" type="button" aria-label="Preview file" aria-pressed="false" title="Show preview" hidden>
+                <svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+              </button>
+              <button id="wrap-text" class="icon-button small" type="button" aria-label="Wrap text" aria-pressed="false" title="Wrap text">
+                <svg viewBox="0 0 24 24"><path d="M4 6h12M4 10h13a3 3 0 0 1 0 6h-3M4 14h7M14 13l-3 3 3 3"/></svg>
+              </button>
+              <button id="copy-path" class="icon-button small" type="button" aria-label="Copy file path" title="Copy path">
+                <svg viewBox="0 0 24 24"><rect x="8" y="8" width="10" height="10" rx="2"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="editor-body" class="editor-body">
+          <div id="file-find-bar" class="file-find-bar ls-ui-floating-surface" hidden>
+            <svg class="file-find-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
+            <input id="file-find-input" class="ls-ui-search-field" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Find in current file" placeholder="Find in file">
+            <span id="file-find-count" class="file-find-count" aria-live="polite">0/0</span>
+            <button id="file-find-previous" class="icon-button small" type="button" aria-label="Previous match" title="Previous match (Shift+Enter)"><svg viewBox="0 0 24 24"><path d="m7 14 5-5 5 5"/></svg></button>
+            <button id="file-find-next" class="icon-button small" type="button" aria-label="Next match" title="Next match (Enter)"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></button>
+            <button id="file-find-close" class="icon-button small" type="button" aria-label="Close find" title="Close find (Esc)"><svg viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
+          </div>
+          <section id="viewer" class="viewer" tabindex="-1">
+            <div id="loading" class="viewer-message">Select a file from Files or use ⌘P.</div>
+            <div id="file-loading-skeleton" class="file-loading-skeleton" hidden aria-hidden="true">
+              <div class="file-loading-skeleton__gutter">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <div class="file-loading-skeleton__code">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+            </div>
+            <div id="text-viewer" class="text-viewer" hidden>
+              <div id="scroll" class="code-scroll">
+                <div id="line-numbers" class="line-numbers" aria-hidden="true"></div>
+                <pre class="code-pre"><code id="code"></code></pre>
+              </div>
+              <div id="edit-viewer" class="edit-viewer" hidden>
+                <div id="git-gutter" class="git-gutter" aria-hidden="true"></div>
+                <div id="edit-line-numbers" class="edit-line-numbers" aria-hidden="true"></div>
+                <div class="edit-code-pane">
+                  <div id="line-wrap-measure" class="line-wrap-measure" aria-hidden="true"></div>
+                  <pre id="edit-highlight" class="edit-highlight" aria-hidden="true"><code id="edit-code"></code></pre>
+                  <textarea id="file-editor" class="file-editor" aria-label="File editor" autocomplete="off" autocapitalize="off" spellcheck="false"></textarea>
+                </div>
+              </div>
+              <div id="annotation-markers" class="annotation-markers"></div>
+              <article id="markdown-rendered" class="markdown-rendered" hidden></article>
+              <iframe id="html-rendered" class="html-rendered" sandbox="allow-scripts" referrerpolicy="no-referrer" title="HTML preview" hidden></iframe>
+            </div>
+            <div id="diff-viewer" class="diff-viewer" hidden></div>
+            <div id="media-viewer" class="media-viewer" hidden></div>
+          </section>
+        </div>
+      </section>
+    </div>
+    <button id="annotate-selection" class="annotate-selection ls-ui-button ls-ui-floating-surface" type="button" hidden>Annotate</button>
+    <div id="annotation-editor" class="annotation-editor ls-ui-floating-surface" hidden>
+      <textarea id="annotation-comment" rows="1" placeholder="Add a comment…"></textarea>
+      <button id="save-annotation" class="annotation-save" type="button" aria-label="Save annotation" title="Save annotation">
+        <svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>
+      </button>
+      <div id="annotation-existing-actions" class="annotation-existing-actions" hidden>
+        <button id="delete-annotation" class="annotation-delete" type="button" aria-label="Delete annotation" title="Delete annotation">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"/></svg>
+        </button>
+        <span></span>
+        <button id="cancel-annotation" class="annotation-cancel" type="button">Cancel</button>
+        <button id="save-existing-annotation" class="annotation-save annotation-save-existing" type="button" aria-label="Save annotation" title="Save annotation">
+          <svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="annotation-tooltip" class="annotation-tooltip ls-ui-floating-surface" hidden></div>
+  </main>
+</body>
+</html>

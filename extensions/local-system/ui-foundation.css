@@ -1,0 +1,197 @@
+:root {
+  color-scheme: light dark;
+  --ls-ui-font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ls-ui-font-size: 13px;
+  --ls-ui-font-size-secondary: 11.5px;
+  --ls-ui-font-size-label: 11px;
+  --ls-ui-icon-size: 16px;
+  --ls-ui-icon-button-size: 28px;
+  --ls-ui-weight-regular: 400;
+  --ls-ui-weight-medium: 500;
+  --ls-ui-weight-strong: 600;
+  --ls-ui-line-height: 1.4;
+
+  /*
+   * Theme contract:
+   * - On chatgpt.com, prefer ChatGPT's live surface/text tokens.
+   * - In extension-owned documents, fall back to explicit light/dark values.
+   * - Host frames may override --ls-ui-surface/--ls-ui-text inline.
+   */
+  --ls-ui-fallback-surface: #ffffff;
+  --ls-ui-fallback-text: #0d0d0d;
+  --ls-ui-surface: var(--main-surface-primary, var(--ls-ui-fallback-surface));
+  --ls-ui-text: var(--text-primary, var(--ls-ui-fallback-text));
+  --ls-ui-muted: color-mix(in srgb, var(--ls-ui-text) 56%, transparent);
+  --ls-ui-faint: color-mix(in srgb, var(--ls-ui-text) 36%, transparent);
+  --ls-ui-surface-subtle: color-mix(in srgb, var(--ls-ui-text) 2.2%, var(--ls-ui-surface));
+  --ls-ui-surface-raised: color-mix(in srgb, var(--ls-ui-text) 4%, var(--ls-ui-surface));
+  --ls-ui-surface-strong: color-mix(in srgb, var(--ls-ui-text) 7%, var(--ls-ui-surface));
+  --ls-ui-hover: color-mix(in srgb, var(--ls-ui-text) 4.5%, transparent);
+  --ls-ui-active: color-mix(in srgb, var(--ls-ui-text) 6.5%, transparent);
+  --ls-ui-focus: color-mix(in srgb, var(--ls-ui-text) 18%, transparent);
+  --ls-ui-separator: color-mix(in srgb, var(--ls-ui-text) 7%, transparent);
+  --ls-ui-control-bg: var(--ls-ui-surface-raised);
+  --ls-ui-control-text: var(--ls-ui-text);
+  --ls-ui-control-hover: color-mix(in srgb, var(--ls-ui-text) 7%, var(--ls-ui-surface));
+  --ls-ui-primary-bg: color-mix(in srgb, var(--ls-ui-text) 94%, var(--ls-ui-surface));
+  --ls-ui-primary-text: var(--ls-ui-surface);
+  --ls-ui-success: #0f9f75;
+  --ls-ui-danger: #d93025;
+  --ls-ui-warning: #b7791f;
+  --ls-ui-info: #3b82f6;
+  --ls-ui-accent: #7867ff;
+  --ls-ui-git-added: #2da44e;
+  --ls-ui-git-modified: #388bfd;
+  --ls-ui-git-deleted: #cf222e;
+
+  --ls-ui-radius-control: 8px;
+  --ls-ui-radius-button: 14px;
+  --ls-ui-radius-row: 9px;
+  --ls-ui-radius-surface: 12px;
+  --ls-ui-radius-floating: 14px;
+  --ls-ui-radius-annotation: 24px;
+  --ls-ui-radius-annotation-editing: 22px;
+  --ls-ui-radius-annotation-tooltip: 14px;
+  --ls-ui-annotation-editor-width: 336px;
+  --ls-ui-shadow-floating: 0 10px 30px rgba(0,0,0,.10), 0 2px 7px rgba(0,0,0,.05);
+  --ls-ui-shadow-dialog: 0 18px 54px rgba(0,0,0,.14), 0 3px 12px rgba(0,0,0,.05);
+  --ls-ui-transition-fast: 100ms ease;
+}
+
+.ls-ui-floating-surface,
+.ls-ui-dialog-surface {
+  border: 0;
+  background: var(--ls-ui-surface);
+  color: var(--ls-ui-text);
+}
+
+.ls-ui-floating-surface {
+  border-radius: var(--ls-ui-radius-surface);
+  box-shadow: var(--ls-ui-shadow-floating);
+}
+
+.ls-ui-dialog-surface {
+  border-radius: var(--ls-ui-radius-floating);
+  box-shadow: var(--ls-ui-shadow-dialog);
+}
+
+.ls-ui-backdrop {
+  border: 0;
+  background: color-mix(in srgb, var(--ls-ui-surface) 58%, transparent);
+  backdrop-filter: blur(3px);
+}
+
+.ls-ui-search-field {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  outline: 0;
+  border-radius: var(--ls-ui-radius-control);
+  background: var(--ls-ui-surface-subtle);
+  color: var(--ls-ui-text);
+  transition:
+    background-color var(--ls-ui-transition-fast),
+    box-shadow var(--ls-ui-transition-fast);
+}
+
+.ls-ui-search-field:hover {
+  background: var(--ls-ui-surface-raised);
+}
+
+.ls-ui-search-field:focus,
+.ls-ui-search-field:focus-visible {
+  background: var(--ls-ui-surface-subtle);
+  box-shadow: none;
+}
+
+.ls-ui-search-field::-webkit-search-decoration,
+.ls-ui-search-field::-webkit-search-cancel-button,
+.ls-ui-search-field::-webkit-search-results-button,
+.ls-ui-search-field::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+.ls-ui-list-row {
+  border: 0;
+  border-radius: var(--ls-ui-radius-row);
+  background: transparent;
+  transition:
+    background-color var(--ls-ui-transition-fast),
+    color var(--ls-ui-transition-fast),
+    opacity var(--ls-ui-transition-fast);
+}
+
+.ls-ui-list-row:hover { background: var(--ls-ui-hover); }
+.ls-ui-list-row.active,
+.ls-ui-list-row[aria-selected="true"] { background: var(--ls-ui-active); }
+
+.ls-ui-icon-button {
+  border: 0;
+  border-radius: var(--ls-ui-radius-control);
+  transition:
+    background-color var(--ls-ui-transition-fast),
+    color var(--ls-ui-transition-fast),
+    opacity var(--ls-ui-transition-fast),
+    transform var(--ls-ui-transition-fast);
+}
+
+.ls-ui-button {
+  border: 0;
+  border-radius: var(--ls-ui-radius-button);
+  transition:
+    background-color var(--ls-ui-transition-fast),
+    color var(--ls-ui-transition-fast),
+    opacity var(--ls-ui-transition-fast),
+    transform var(--ls-ui-transition-fast);
+}
+
+.ls-ui-icon-button:hover,
+.ls-ui-button:hover { background: var(--ls-ui-hover); }
+
+.ls-ui-kbd {
+  border: 0;
+  border-radius: 6px;
+  background: var(--ls-ui-surface-raised);
+  color: var(--ls-ui-muted);
+}
+
+.ls-ui-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--ls-ui-text) 13%, transparent) transparent;
+}
+
+.ls-ui-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.ls-ui-scroll::-webkit-scrollbar-track { background: transparent; }
+.ls-ui-scroll::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ls-ui-text) 13%, transparent);
+  background-clip: padding-box;
+}
+.ls-ui-scroll:hover::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ls-ui-text) 22%, transparent);
+  background-clip: padding-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ls-ui-fallback-surface: #212121;
+    --ls-ui-fallback-text: #f4f4f4;
+    --ls-ui-success: #19c79a;
+    --ls-ui-danger: #ff6b62;
+    --ls-ui-warning: #e3a341;
+    --ls-ui-info: #6aa9ff;
+    --ls-ui-git-added: #3fb950;
+    --ls-ui-git-modified: #58a6ff;
+    --ls-ui-git-deleted: #f85149;
+    --ls-ui-shadow-floating: 0 12px 34px rgba(0,0,0,.26), 0 2px 8px rgba(0,0,0,.16);
+    --ls-ui-shadow-dialog: 0 20px 58px rgba(0,0,0,.32), 0 4px 14px rgba(0,0,0,.16);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ls-ui-list-row,
+  .ls-ui-search-field,
+  .ls-ui-icon-button,
+  .ls-ui-button { transition: none; }
+}

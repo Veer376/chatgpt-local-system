@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="ui-foundation.css">
+    <link rel="stylesheet" href="composer-shared.css">
+    <link rel="stylesheet" href="todos.css">
+    <script src="shared-runtime.js"></script>
+    <script src="extension-api.js"></script>
+    <script src="todos.js" defer></script>
+  </head>
+  <body>
+    <section class="panel ls-ui-dialog-surface" id="panel">
+      <button class="summary" id="summary" type="button" aria-expanded="false">
+        <span class="summary-status" id="summary-status" aria-hidden="true">○</span>
+        <span class="summary-current" id="summary-current">Loading todos…</span>
+        <span class="summary-meta" id="summary-meta">…</span>
+      </button>
+      <div class="details" id="details"></div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="ui-foundation.css">
+  <link rel="stylesheet" href="composer-shared.css">
+  <link rel="stylesheet" href="file-quick-open.css">
+  <script src="shared-runtime.js"></script>
+  <script src="extension-api.js"></script>
+  <script src="file-quick-open.js" defer></script>
+</head>
+<body>
+  <main id="panel" class="panel ls-ui-dialog-surface">
+    <div class="search-row">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg>
+      <input id="search" class="ls-ui-search-field" autocomplete="off" spellcheck="false" placeholder="Search files by name or path…" aria-label="Search files">
+      <kbd id="shortcut-hint" class="ls-ui-kbd">⌘P</kbd>
+    </div>
+    <div class="mode-row" role="tablist" aria-label="Workspace search mode">
+      <button id="mode-files" class="mode-button active" type="button" role="tab" aria-selected="true">Files</button>
+      <button id="mode-text" class="mode-button" type="button" role="tab" aria-selected="false">Text</button>
+    </div>
+    <div id="status" class="status">Type to search the current workspace and authorized roots.</div>
+    <div id="results" class="results ls-ui-scroll" role="listbox"></div>
+    <footer>
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> open</span>
+      <span><kbd>esc</kbd> close</span>
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,278 @@
+.ls-skill-chip-group {
+  display: flex;
+  order: 40;
+  align-items: center;
+  gap: 6px;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: min(62vw, 520px);
+  height: 40px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  pointer-events: auto;
+}
+.ls-skill-chip-group::-webkit-scrollbar { display: none; }
+
+.ls-skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  height: 40px;
+  max-width: 220px;
+  padding: 0 12px 0 8px;
+  border: 1px solid color-mix(in srgb, #14b8a6 25%, transparent);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, #14b8a6 8%, var(--ls-composer-surface)),
+      color-mix(in srgb, #14b8a6 4%, var(--ls-composer-surface)));
+  color: var(--ls-composer-text);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #14b8a6 4%, transparent),
+    0 1px 2px color-mix(in srgb, var(--ls-composer-text) 4%, transparent);
+  font: var(--ls-composer-font);
+  cursor: pointer;
+}
+.ls-skill-chip:hover {
+  border-color: color-mix(in srgb, #14b8a6 38%, transparent);
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, #14b8a6 13%, var(--ls-composer-surface)),
+      color-mix(in srgb, #14b8a6 7%, var(--ls-composer-surface)));
+}
+.ls-skill-chip:not(.ls-skill-chip--summary):hover {
+  border-color: color-mix(in srgb, #ef4444 28%, transparent);
+  background: color-mix(in srgb, #ef4444 10%, var(--ls-composer-surface));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #ef4444 5%, transparent);
+}
+.ls-skill-chip:focus-visible { outline: 2px solid color-mix(in srgb, #14b8a6 58%, transparent); outline-offset: 2px; }
+.ls-skill-chip:disabled { opacity: .45; cursor: default; }
+.ls-skill-chip__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 var(--ls-ui-icon-size);
+  width: var(--ls-ui-icon-size);
+  height: var(--ls-ui-icon-size);
+  color: color-mix(in srgb, #14b8a6 76%, var(--ls-composer-text));
+}
+.ls-skill-chip__icon svg {
+  width: var(--ls-ui-icon-size);
+  height: var(--ls-ui-icon-size);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity 90ms ease-out;
+}
+.ls-skill-chip__icon::before,
+.ls-skill-chip__icon::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 6.4px;
+  width: 10px;
+  height: 1.2px;
+  border-radius: 999px;
+  background: #ef4444;
+  opacity: 0;
+  transition: opacity 90ms ease-out, transform 90ms ease-out;
+}
+.ls-skill-chip__icon::before { transform: rotate(45deg) scale(.8); }
+.ls-skill-chip__icon::after { transform: rotate(-45deg) scale(.8); }
+.ls-skill-chip:not(.ls-skill-chip--summary):hover .ls-skill-chip__icon svg,
+.ls-skill-popover__skill:hover .ls-skill-chip__icon svg {
+  opacity: 0;
+}
+.ls-skill-chip:not(.ls-skill-chip--summary):hover .ls-skill-chip__icon::before,
+.ls-skill-chip:not(.ls-skill-chip--summary):hover .ls-skill-chip__icon::after,
+.ls-skill-popover__skill:hover .ls-skill-chip__icon::before,
+.ls-skill-popover__skill:hover .ls-skill-chip__icon::after {
+  opacity: 1;
+}
+.ls-skill-chip:not(.ls-skill-chip--summary):hover .ls-skill-chip__icon::before,
+.ls-skill-popover__skill:hover .ls-skill-chip__icon::before {
+  transform: rotate(45deg) scale(1);
+}
+.ls-skill-chip:not(.ls-skill-chip--summary):hover .ls-skill-chip__icon::after,
+.ls-skill-popover__skill:hover .ls-skill-chip__icon::after {
+  transform: rotate(-45deg) scale(1);
+}
+.ls-skill-chip__label {
+  min-width: 0;
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ls-project-popover {
+  position: fixed;
+  z-index: 2147483646;
+  display: flex;
+  flex-direction: column;
+  max-height: min(430px, 60vh);
+  padding: 7px;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--ls-ui-radius-floating);
+  background: var(--ls-composer-surface);
+  box-shadow: var(--ls-ui-shadow-floating);
+  color: var(--ls-composer-text);
+  pointer-events: auto;
+  font: var(--ls-composer-font);
+}
+.ls-project-popover__header {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 7px 5px;
+}
+.ls-project-popover__header strong { font: inherit; font-weight:var(--ls-ui-weight-medium); }
+.ls-project-popover__files {
+  height: 28px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--ls-ui-radius-control);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+.ls-project-popover__files:hover { background: var(--ls-ui-hover); }
+.ls-project-popover__list {
+  display: grid;
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: 2px;
+  max-height: none;
+  margin-top: 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ls-project-popover__search {
+  box-sizing: border-box;
+  width: 100%;
+  height: 36px;
+  margin-top: 5px;
+  padding: 0 10px;
+  color: var(--ls-composer-text);
+  font: var(--ls-composer-font);
+}
+.ls-project-popover__search::placeholder {
+  color: color-mix(in srgb, var(--ls-composer-text) 42%, transparent);
+}
+.ls-project-popover__project {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--ls-ui-radius-row);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ls-project-popover__project:hover,
+.ls-project-popover__project.active { background: var(--ls-ui-active); }
+.ls-project-popover__project:disabled { opacity: .45; cursor: default; }
+.ls-project-popover__project-name {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: inherit;
+}
+.ls-project-popover__project-status {
+  flex: 0 0 auto;
+  margin-left: 8px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ls-composer-text) 7%, transparent);
+  color: color-mix(in srgb, var(--ls-composer-text) 58%, transparent);
+  font-size: 10px;
+  font-weight: var(--ls-ui-weight-medium);
+  line-height: 1.2;
+}
+.ls-project-popover__project.current .ls-project-popover__project-status {
+  background: color-mix(in srgb, var(--ls-ui-success) 12%, transparent);
+  color: color-mix(in srgb, var(--ls-ui-success) 76%, var(--ls-composer-text));
+}
+.ls-project-popover__empty {
+  padding: 12px 10px;
+  color: color-mix(in srgb, var(--ls-composer-text) 58%, transparent);
+  font: inherit;
+}
+.ls-skill-popover {
+  position: fixed;
+  z-index: 2147483646;
+  width: min(250px, calc(100vw - 16px));
+  padding: 7px;
+  border: 0;
+  border-radius: var(--ls-ui-radius-floating);
+  background: var(--ls-composer-surface);
+  box-shadow: var(--ls-ui-shadow-floating);
+  pointer-events: auto;
+  font: var(--ls-composer-font);
+}
+.ls-skill-popover__list {
+  display: grid;
+  gap: 2px;
+  max-height: min(300px, 48vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ls-skill-popover__skill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 36px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: var(--ls-ui-radius-row);
+  background: transparent;
+  color: var(--ls-composer-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ls-skill-popover__skill:hover {
+  background: color-mix(in srgb, #ef4444 10%, transparent);
+}
+.ls-skill-popover__skill:disabled { opacity: .45; cursor: default; }
+.ls-skill-popover__skill .ls-skill-chip__label {
+  max-width: none;
+  flex: 1 1 auto;
+}
+.ls-skill-popover__footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+  padding-top: 5px;
+}
+.ls-skill-popover__clear {
+  height: 28px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--ls-ui-radius-control);
+  background: transparent;
+  color: var(--ls-composer-text);
+  opacity: .58;
+  font: inherit;
+  cursor: pointer;
+}
+.ls-skill-popover__clear:hover {
+  opacity: 1;
+  background: color-mix(in srgb, var(--ls-composer-text) 6%, transparent);
+}
+.ls-skill-popover__clear:disabled { opacity: .28; cursor: default; }
