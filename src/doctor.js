@@ -2,8 +2,16 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import net from "node:net";
 import { spawnSync } from "node:child_process";
-import {
+import dotenv from "dotenv";
+import { commandExists } from "./lib/exec.js";
+import { httpUrl } from "./lib/net.js";
+import { canonicalPath, isWithin } from "./lib/paths.js";
+import { EXPECTED_TOOL_NAMES } from "./tool-contract.js";
+
+const runtimeEnvFile = loadRuntimeEnvironment();
+const {
   APP_NAME,
   APP_VERSION,
   DEFAULT_WORKSPACE,
@@ -14,17 +22,19 @@ import {
   configuredProjectRoots,
   ensureStateDirs,
   validateRuntimeConfig,
-} from "./lib/config.js";
-import { commandExists } from "./lib/exec.js";
-import { httpUrl } from "./lib/net.js";
-import { canonicalPath, isWithin } from "./lib/paths.js";
-import { EXPECTED_TOOL_NAMES } from "./tool-contract.js";
+} = await import("./lib/config.js");
 
 const checks = [];
-const check = (name, status, detail, required = false) => checks.push({ name, status, detail, required });
+const check = (name, status, detail, required = false) => checks.push({
+  name,
+  status,
+  detail: redactSecrets(String(detail ?? "")),
+  required,
+});
 
 const major = Number(process.versions.node.split(".")[0]);
 check("Node.js", major >= 20 ? "pass" : "fail", process.version, true);
+checkRuntimeEnv();
 try {
   validateRuntimeConfig();
   check("runtime config", "pass", `HOST=${HOST} PORT=${PORT} auth=${MCP_TOKEN ? "bearer" : "loopback-only"}`, true);
@@ -83,15 +93,20 @@ if (commandExists("tunnel-client")) {
   }
 }
 
-if (process.argv.includes("--live")) {
-  try {
-    const response = await fetch(httpUrl(HOST, PORT, "/readyz"));
-    const body = await response.json();
-    check("live bridge", response.ok && body.toolCount === EXPECTED_TOOL_NAMES.length ? "pass" : "fail", `${response.status} tools=${body.toolCount}`, true);
-  } catch (error) {
-    check("live bridge", "fail", error.message, true);
-  }
+const extensionOrigins = String(process.env.LOCAL_EXTENSION_ORIGIN || "")
+  .split(",")
+  .map((value) => value.trim())
+  .filter(Boolean);
+if (!extensionOrigins.length) {
+  check("extension origin", "warn", "not configured; required only for the Chrome/Safari companion extension");
+} else {
+  const invalid = extensionOrigins.filter((origin) => !/^(?:chrome-extension:\/\/[a-p]{32}|safari-web-extension:\/\/[A-Za-z0-9.-]+)$/.test(origin));
+  check("extension origin", invalid.length ? "fail" : "pass", invalid.length ? "invalid LOCAL_EXTENSION_ORIGIN value" : `${extensionOrigins.length} allowed origin(s)`, invalid.length > 0);
 }
+
+const liveRequired = process.argv.includes("--live");
+await checkBridgeStatus(liveRequired);
+await checkTunnelStatus(tunnelMode);
 
 const jsonMode = process.argv.includes("--json");
 if (jsonMode) console.log(JSON.stringify({ name: APP_NAME, version: APP_VERSION, checks }, null, 2));
@@ -113,4 +128,115 @@ function version(binary) {
     if (text) return text.slice(0, 160);
   }
   return "found";
+}
+
+function defaultRuntimeEnv() {
+  return process.platform === "win32"
+    ? path.join(process.env.APPDATA || os.homedir(), "chatgpt-local-system", "runtime.env")
+    : path.join(process.env.XDG_CONFIG_HOME || path.join(os.homedir(), ".config"), "chatgpt-local-system", "runtime.env");
+}
+
+function loadRuntimeEnvironment() {
+  const requested = process.env.BRIDGE_ENV_FILE || defaultRuntimeEnv();
+  const candidates = [requested];
+  if (!process.env.BRIDGE_ENV_FILE) candidates.push(path.resolve(".env"));
+  const selected = candidates.find((candidate) => fs.existsSync(candidate));
+  if (!selected) return requested;
+  const parsed = dotenv.parse(fs.readFileSync(selected));
+  for (const [key, value] of Object.entries(parsed)) {
+    if (process.env[key] === undefined) process.env[key] = value;
+  }
+  process.env.BRIDGE_ENV_FILE ||= selected;
+  return selected;
+}
+
+function checkRuntimeEnv() {
+  if (!fs.existsSync(runtimeEnvFile)) {
+    check("runtime.env", "fail", `missing ${runtimeEnvFile}; run the setup guide first`, true);
+    return;
+  }
+  try {
+    const stat = fs.statSync(runtimeEnvFile);
+    if (!stat.isFile()) {
+      check("runtime.env", "fail", `${runtimeEnvFile} is not a regular file`, true);
+      return;
+    }
+    if (process.platform === "win32") {
+      check("runtime.env", "pass", `${runtimeEnvFile} readable; Windows ACLs are not automatically audited`);
+      return;
+    }
+    const mode = stat.mode & 0o777;
+    const ownerOk = typeof process.getuid !== "function" || stat.uid === process.getuid();
+    const privateMode = (mode & 0o077) === 0;
+    check(
+      "runtime.env",
+      ownerOk && privateMode ? "pass" : "fail",
+      ownerOk && privateMode
+        ? `${runtimeEnvFile} permissions ${mode.toString(8).padStart(3, "0")}`
+        : `${runtimeEnvFile} must be owned by the current user and not readable/writable by group or others`,
+      true,
+    );
+  } catch (error) {
+    check("runtime.env", "fail", error.message, true);
+  }
+}
+
+async function checkBridgeStatus(required) {
+  const url = httpUrl(HOST, PORT, "/readyz");
+  try {
+    const response = await fetch(url, { signal: AbortSignal.timeout(2_000) });
+    const body = await response.json();
+    const valid = response.ok && body.toolCount === EXPECTED_TOOL_NAMES.length;
+    check("bridge status", valid ? "pass" : "fail", valid ? `running on ${HOST}:${PORT}; ${body.toolCount} tools` : `unexpected readiness response on ${HOST}:${PORT}`, required || !valid);
+  } catch {
+    const occupied = await tcpListening(HOST, PORT);
+    if (occupied) check("bridge status", "fail", `port ${PORT} is occupied but Local System readiness failed`, true);
+    else check("bridge status", required ? "fail" : "warn", `not running on ${HOST}:${PORT}`, required);
+  }
+}
+
+async function checkTunnelStatus(required) {
+  const tunnelPort = integerEnv("TUNNEL_HEALTH_PORT", 8766);
+  try {
+    const response = await fetch(httpUrl("127.0.0.1", tunnelPort, "/readyz"), { signal: AbortSignal.timeout(2_000) });
+    const text = (await response.text()).trim();
+    const valid = response.ok && text === "ready";
+    check("tunnel status", valid ? "pass" : "fail", valid ? `local tunnel client ready on 127.0.0.1:${tunnelPort}` : `unexpected health response on 127.0.0.1:${tunnelPort}`, required || !valid);
+  } catch {
+    const occupied = await tcpListening("127.0.0.1", tunnelPort);
+    if (occupied) check("tunnel status", "fail", `health port ${tunnelPort} is occupied but tunnel readiness failed`, true);
+    else check("tunnel status", required ? "fail" : "warn", `not running on 127.0.0.1:${tunnelPort}`, required);
+  }
+}
+
+function integerEnv(name, fallback) {
+  const value = Number.parseInt(process.env[name] || "", 10);
+  return Number.isInteger(value) && value > 0 && value <= 65_535 ? value : fallback;
+}
+
+function tcpListening(host, port) {
+  return new Promise((resolve) => {
+    const socket = net.createConnection({ host, port });
+    let settled = false;
+    const finish = (value) => {
+      if (settled) return;
+      settled = true;
+      socket.destroy();
+      resolve(value);
+    };
+    socket.setTimeout(900, () => finish(false));
+    socket.once("connect", () => finish(true));
+    socket.once("error", () => finish(false));
+  });
+}
+
+function redactSecrets(value) {
+  let output = value;
+  for (const [name, secret] of Object.entries(process.env)) {
+    if (!/(?:TOKEN|KEY|SECRET|PASSWORD|AUTHTOKEN)/i.test(name) || !secret || secret.length < 6) continue;
+    output = output.split(secret).join("<redacted>");
+  }
+  return output
+    .replace(/\b(?:sk-(?:proj-)?[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|xox[baprs]-[A-Za-z0-9-]{12,})\b/g, "<redacted>")
+    .replace(/\bBearer\s+[A-Za-z0-9._~+/=-]{8,}\b/gi, "Bearer <redacted>");
 }
