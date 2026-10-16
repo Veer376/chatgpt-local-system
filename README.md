@@ -6,7 +6,7 @@
   <p>Attach local files and skills while you write a prompt. Browse your project beside the chat. Let ChatGPT work with your local tools and files.</p>
   <p>
     <a href="#get-started">Get started</a> ·
-    <a href="#the-two-shortcuts">Try the shortcuts</a> ·
+    <a href="#features">Try the shortcuts</a> ·
     <a href="docs/INSTALL-SECURE-TUNNEL.md">Install guide</a> ·
     <a href="docs/INSTALL-NGROK.md">ngrok</a>
   </p>
@@ -14,45 +14,82 @@
 
 ---
 
-## The two shortcuts
+## Features
 
-Type directly in the **ChatGPT message composer**. Local System adds two searchable pickers so you do not need to manually open Finder, copy a file path, or paste a skill's instructions.
-
-<table>
-  <tr>
-    <th width="50%">Attach a skill</th>
-    <th width="50%">Attach a local file</th>
-  </tr>
-  <tr>
-    <td><h3><kbd>//</kbd> Skills</h3>Type <code>//</code> followed by a skill name to search your locally registered skills.<br /><br /><code>//code-review</code><br /><br />Choose a result → Local System adds a removable skill chip and the <code>/skill-name</code> marker to your prompt. On send, the registered <code>SKILL.md</code> content is supplied to ChatGPT.</td>
-    <td><h3><kbd>@@</kbd> Files</h3>Type <code>@@</code> followed by a file name to search authorized local project files.<br /><br /><code>@@src/server.js</code><br /><br />Choose a result → Local System attaches the actual file through ChatGPT's composer, not merely a text path. Search prioritizes the active workspace.</td>
-  </tr>
-</table>
-
-**Example:** Type `//code-review` to select a review skill, then `@@src/server.js` to attach the source file. Ask ChatGPT to review it using that skill. The exact available skills and files depend on your local configuration.
-
-> Attaching a file or skill sends its selected content to ChatGPT. Do not select confidential files or skill instructions unless you intend to share them with ChatGPT.
-
-## More than a local terminal
-
-The composer shortcuts are one part of the experience. Local System combines a small MCP bridge with a ChatGPT-integrated workspace, rather than leaving you to move between a shell, an editor, and a conversation.
+Local System combines a **ChatGPT composer extension**, an **in-chat project workspace**, and an **MCP bridge** for working on your computer. The most immediate difference is that files and reusable skills are available while you are writing a message, instead of requiring you to copy content between apps.
 
 <table>
-  <tr>
-    <td width="50%"><strong>Project workspace beside the chat</strong><br />A native Chrome side panel for browsing the project tree, switching files, searching, editing source, and reviewing changes. Open files without leaving your conversation.</td>
-    <td><strong>Clickable paths in ChatGPT replies</strong><br />Paths in responses open the corresponding authorized local file. Relative paths resolve within the selected project or conversation context instead of searching your entire computer.</td>
-  </tr>
-  <tr>
-    <td><strong>Previews that match the file</strong><br />View images, PDFs, videos, rendered Markdown and sandboxed HTML. Move from source to preview in the workspace, with supported preview types depending on the file.</td>
-    <td><strong>Feedback with context</strong><br />Annotate files and selected text, leave timestamped video notes, and pass structured <code>[Annotations]</code> back into the ChatGPT composer.</td>
-  </tr>
-  <tr>
-    <td><strong>Commands, tasks, and memory</strong><br />Run tools against authorized projects, follow longer-running tasks, carry conversation-scoped todos, and resume work from runtime checkpoints.</td>
-    <td><strong>Local control and approvals</strong><br />Eleven fixed MCP tools, configured file roots, audit information, and confirmation for classified destructive operations by default. This is <strong>not</strong> an OS sandbox.</td>
-  </tr>
+  <thead>
+    <tr><th colspan="2" align="left">Attach context without leaving ChatGPT</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td width="50%" valign="top">
+        <h3><kbd>//</kbd> Attach local skills</h3>
+        <p>Search registered skills directly inside the message composer. Pick a skill instead of opening and copying its instructions.</p>
+        <p><strong>Type:</strong> <code>//code-review</code></p>
+        <p><strong>Then:</strong> select a result → a removable skill chip and <code>/skill-name</code> marker appear → the selected <code>SKILL.md</code> instructions are included when you send.</p>
+        <sub>Example name only: your available skills come from your own local configuration.</sub>
+      </td>
+      <td width="50%" valign="top">
+        <h3><kbd>@@</kbd> Attach project files</h3>
+        <p>Find files in your authorized local projects from the same composer. Choose a result to attach the actual file, not just paste its path.</p>
+        <p><strong>Type:</strong> <code>@@src/server.js</code></p>
+        <p><strong>Then:</strong> select a result → the file attaches to the ChatGPT prompt. Search prefers the current project, with authorized roots available when needed.</p>
+        <sub>No manual Finder navigation or file copying. Only attach content you intend to share.</sub>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <strong>Example: review a file with your own instructions</strong>
+        <p><code>//code-review</code> &nbsp; + &nbsp; <code>@@src/server.js</code> &nbsp; → &nbsp; “Review this file using the attached skill.”</p>
+        <sub>Both pickers are part of the optional Chrome extension; the local bridge must be running.</sub>
+      </td>
+    </tr>
+    <tr><th colspan="2" align="left">Explore, edit, and discuss your project</th></tr>
+    <tr>
+      <td valign="top">
+        <h3>Project workspace beside the conversation</h3>
+        <p>Keep a file explorer and editor alongside ChatGPT with a right-side Chrome panel: navigate project folders, search, open tabs, inspect changes, edit text, and explicitly save.</p>
+        <p><strong>In practice:</strong> ask ChatGPT to make a change, then inspect the resulting files without switching to another editor.</p>
+      </td>
+      <td valign="top">
+        <h3>Clickable file references in replies</h3>
+        <p>When ChatGPT mentions an authorized local file path, open it in the Local System workspace by clicking the reference.</p>
+        <p><strong>In practice:</strong> jump from <code>src/server.js</code> in an answer to the actual file. Relative paths use the selected project rather than a filesystem-wide search.</p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <h3>Rich previews for real project files</h3>
+        <p>Open code, rendered Markdown, sandboxed HTML, images, PDFs, and video in the workspace. Switch between source and preview where supported.</p>
+        <p><strong>In practice:</strong> inspect an HTML page or a generated image directly beside the conversation.</p>
+      </td>
+      <td valign="top">
+        <h3>Annotations ChatGPT can act on</h3>
+        <p>Comment on selected text, files, rendered content, and moments in videos. Local System returns structured feedback to the composer.</p>
+        <p><strong>In practice:</strong> mark a video timestamp or highlight a code section, then send the resulting <code>[Annotations]</code> back for a precise correction.</p>
+      </td>
+    </tr>
+    <tr><th colspan="2" align="left">Run work locally and stay in control</th></tr>
+    <tr>
+      <td valign="top">
+        <h3>Local tools and long-running tasks</h3>
+        <p>Give ChatGPT access to an explicit 11-tool MCP surface: read context, apply patches, run commands, discover skills, inspect media, and track work.</p>
+        <p><strong>In practice:</strong> let a build or test run continue as a managed task, with thread-aware todos and runtime checkpoints for follow-up calls.</p>
+      </td>
+      <td valign="top">
+        <h3>Workspace scope and human approval</h3>
+        <p>Choose authorized project roots, review audit information, and confirm classified destructive operations by default.</p>
+        <p><strong>Important:</strong> shell execution still has your OS account's authority. Approval checks and path restrictions are <strong>not a sandbox</strong>.</p>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
-These capabilities are Local System's focus, **not** a claim that no other project has similar features. For shortcuts, workspace behavior and keyboard commands, see the [extension reference](extensions/local-system/README.md).
+<sub>Feature availability varies by context: composer pickers, file previews, annotations, and the side panel require the Chrome extension; MCP tools work independently through the bridge. These are Local System's focus, not a claim that other projects cannot offer similar capabilities.</sub>
+
+For shortcut syntax, workspace behavior and keyboard commands, see the [extension reference](extensions/local-system/README.md).
 
 <!-- PRODUCT DEMO SLOT: Add a real, sanitized screenshot or short GIF of the Local System side panel/composer here. Do not use unrelated website screenshots. -->
 
