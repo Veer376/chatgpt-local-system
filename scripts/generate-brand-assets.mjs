@@ -17,6 +17,9 @@ if (!fs.existsSync(canonicalMarkPath)) throw new Error(`Missing canonical websit
 const mark = fs.readFileSync(canonicalMarkPath, "utf8");
 const match = mark.match(/<svg\b[^>]*>([\s\S]*?)<\/svg>/i);
 if (!match) throw new Error("website/favicon.svg is not a valid inline SVG");
+const viewBoxMatch = mark.match(/viewBox=["']\s*([\d.-]+)\s+([\d.-]+)\s+([\d.-]+)\s+([\d.-]+)\s*["']/i);
+if (!viewBoxMatch) throw new Error("website/favicon.svg must define a numeric viewBox");
+const markWidth = Number(viewBoxMatch[3]);
 const draw = match[1]
   .replace(/<title\b[^>]*>[\s\S]*?<\/title>/gi, "")
   .replace(/<desc\b[^>]*>[\s\S]*?<\/desc>/gi, "")
@@ -26,7 +29,7 @@ fs.writeFileSync(path.join(icons,"local-system.svg"),mark);
 
 const sans = "-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif";
 const mono = "ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace";
-const emblem=(x,y,size)=>`<g transform="translate(${x} ${y}) scale(${(size/128).toFixed(6)})">${draw}</g>`;
+const emblem=(x,y,size)=>`<g transform="translate(${x} ${y}) scale(${(size/markWidth).toFixed(6)})">${draw}</g>`;
 const t=(x,y,text,size,fill=color.paper,weight=500,extra="")=>`<text x="${x}" y="${y}" font-family="${sans}" font-size="${size}" font-weight="${weight}" fill="${fill}" ${extra}>${text}</text>`;
 const m=(x,y,text,size=16,fill=color.muted,extra="")=>`<text x="${x}" y="${y}" font-family="${mono}" font-size="${size}" fill="${fill}" ${extra}>${text}</text>`;
 const base=(w,h)=>`<rect width="${w}" height="${h}" rx="18" fill="${color.page}"/><rect x=".6" y=".6" width="${w-1.2}" height="${h-1.2}" rx="17.4" fill="none" stroke="#263224"/>`;
@@ -134,6 +137,7 @@ async function pngAssets() {
    for(const size of [16,32,48,128]) {
      // Render directly from the website logo and use a new filename so Chrome cannot
      // continue showing a cached pre-branding toolbar icon after an extension reload.
+     await render(canonicalMarkPath,path.join(icons,`site-logo-${size}.png`),size,size);
      await render(canonicalMarkPath,path.join(icons,`website-logo-${size}.png`),size,size);
      await render(canonicalMarkPath,path.join(icons,`local-system-${size}.png`),size,size);
    }

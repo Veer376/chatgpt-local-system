@@ -1,6 +1,6 @@
 # Local System brand system
 
-**Concept:** a geometric, custom-drawn lowercase `l` and `s`, using the command-name shorthand for **list directory contents**. The vertical `l` is phosphor green, the routed `s` is warm white. These paths are custom SVG shapes, **not typeface outlines**, generated imagery, stock icons or third-party logos.
+**Concept:** the original website mark: lowercase `ls`—the Unix command shorthand for **list directory contents**—set in dark monospace type on a phosphor-green rounded square. This is intentionally the same small mark that appeared in the website navigation before a separate extension icon was introduced.
 
 ## Canonical source
 
@@ -10,7 +10,7 @@
 - `readme-hero.svg` — branded GitHub README header with terminal listing.
 - `social-preview.svg` / `social-preview.png` — social preview artwork, 1200 × 630.
 - `../../docs/assets/features/feature-map.svg` — feature artwork in the same visual language.
-- `../../website/apple-touch-icon.png`, `../../website/social-preview.png`, and `../../extensions/local-system/icons/website-logo-{16,32,48,128}.png` are derivative outputs. The older `local-system-{16,32,48,128}.png` files are also regenerated from the same canonical SVG for compatibility, but the extension manifest intentionally uses the `website-logo-*` names to avoid stale Chrome toolbar-icon caching.
+- `../../website/apple-touch-icon.png`, `../../website/social-preview.png`, and `../../extensions/local-system/icons/site-logo-{16,32,48,128}.png` are derivative outputs. The `website-logo-*` and older `local-system-*` files are also regenerated from the same canonical SVG for compatibility; the extension manifest uses the newest `site-logo-*` names specifically to bypass stale Chrome toolbar-icon caching from earlier branding revisions.
 
 All artwork is locally authored in the repository by `scripts/generate-brand-assets.mjs`. There are no external art assets to attribute or license separately. It is released under the repository's MIT License.
 
@@ -19,14 +19,15 @@ All artwork is locally authored in the repository by `scripts/generate-brand-ass
 | Role | Value |
 | --- | --- |
 | Primary canvas | `#050706` |
-| Mark canvas | `#080B08` |
+| Mark canvas | `#D4FF52` |
+| Mark/type foreground | `#081008` |
 | Phosphor signal | `#D4FF52` |
 | Main foreground | `#F2F5E9` |
 | Secondary text | `#929B8F` |
 | Borders | `#283326` |
 | Secondary accent | `#7CFFAD` |
 
-Use the full-color mark at **16px or larger**. Retain at least **12.5% of its width** as clear space around the square silhouette. Do not stretch, rotate, recolor individual strokes, add drop shadows, or replace the custom letterforms with typed `ls`. On a light canvas, use the dark square version; do not place the green/white paths directly against white.
+Use the full-color mark at **16px or larger**. Retain at least **12.5% of its width** as clear space around the square silhouette. Do not stretch, rotate, recolor the `ls`, or substitute another badge shape. The website may apply its subtle phosphor outer glow; extension/GitHub raster icons should remain the clean green square without extra shadow pixels.
 
 **Accessibility:** the symbol is decorative next to the adjacent visible name; supply an empty `alt` attribute there. For standalone logos, use descriptive alt text such as “Local System logo.” The original SVG includes an accessible title/description. Motion is not part of the logo. Main text and interactive colors should continue to be checked against their immediate background.
 

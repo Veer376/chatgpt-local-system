@@ -16,14 +16,14 @@ function pngSize(path) {
 
 test("Local System extension ships matching ls brand icons at Chrome manifest sizes", () => {
   assert.deepEqual(manifest.icons, {
-    "16": "icons/website-logo-16.png",
-    "32": "icons/website-logo-32.png",
-    "48": "icons/website-logo-48.png",
-    "128": "icons/website-logo-128.png",
+    "16": "icons/site-logo-16.png",
+    "32": "icons/site-logo-32.png",
+    "48": "icons/site-logo-48.png",
+    "128": "icons/site-logo-128.png",
   });
   assert.deepEqual(manifest.action?.default_icon, {
-    "16": "icons/website-logo-16.png",
-    "32": "icons/website-logo-32.png",
+    "16": "icons/site-logo-16.png",
+    "32": "icons/site-logo-32.png",
   });
 
   for (const [size, path] of Object.entries(manifest.icons)) {
@@ -33,22 +33,24 @@ test("Local System extension ships matching ls brand icons at Chrome manifest si
 
 test("cache-busting extension PNGs are exact website-logo renders", () => {
   for (const size of [16, 32, 48, 128]) {
-    const active = readFileSync(new URL(`icons/website-logo-${size}.png`, extensionRoot));
+    const active = readFileSync(new URL(`icons/site-logo-${size}.png`, extensionRoot));
+    const previousCacheBust = readFileSync(new URL(`icons/website-logo-${size}.png`, extensionRoot));
     const compatibility = readFileSync(new URL(`icons/local-system-${size}.png`, extensionRoot));
+    assert.deepEqual(active, previousCacheBust, `${size}px active icon must match previous website render`);
     assert.deepEqual(active, compatibility, `${size}px active icon must match canonical compatibility render`);
   }
 });
 
-test("extension, website and canonical SVG use the identical original paths", () => {
+test("extension, website and brand kit use the identical original website logo", () => {
   const svg = readFileSync(new URL("icons/local-system.svg", extensionRoot), "utf8");
   const canonical = readFileSync(new URL("../../assets/brand/mark.svg", import.meta.url), "utf8");
   const favicon = readFileSync(new URL("../../website/favicon.svg", import.meta.url), "utf8");
   assert.equal(svg, canonical);
   assert.equal(favicon, canonical);
-  assert.match(svg, /Bespoke 'l'/);
-  assert.match(svg, /Bespoke 's'/);
   assert.match(svg, /#D4FF52/);
-  assert.doesNotMatch(svg, /<text\b/); // icon remains font independent
+  assert.match(svg, /#081008/);
+  assert.match(svg, />ls<\/text>/);
+  assert.match(svg, /viewBox="0 0 31 31"/);
   assert.doesNotMatch(svg, /<(?:image|script|foreignObject)\b/); // no embedded remote artwork or scripts
 });
 

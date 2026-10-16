@@ -84,7 +84,7 @@ code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas
   font-size: 13px;
   box-shadow: 0 0 26px rgba(212,255,82,.15);
 }
-.brand-mark { width: 34px; height: 34px; display: block; background: transparent; border-radius: 8px; box-shadow: none; }
+.brand-mark { width: 31px; height: 31px; display: block; border-radius: 5px; box-shadow: 0 0 26px rgba(212,255,82,.15); }
 .brand-name { font-size: 14px; }
 .nav-links { display: flex; gap: 30px; color: #a7aea4; font-size: 13px; }
 .nav-links a { transition: color .18s ease; }
