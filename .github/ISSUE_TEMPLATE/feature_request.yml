@@ -1,0 +1,41 @@
+name: Feature request
+description: Propose a focused improvement to Local System
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the user problem first. For security-sensitive changes, explain the trust boundary rather than proposing a weaker default.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is difficult or impossible today, and for whom?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe the user-visible result rather than only an implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: security
+    attributes:
+      label: Security / data-flow impact
+      description: Does this add a network destination, credential, filesystem authority, executable, new public route, or data sent to ChatGPT?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues/roadmap items for the same request.
+          required: true

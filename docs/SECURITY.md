@@ -52,6 +52,27 @@ Tool start/completion/failure events are redacted and hash-chained in JSONL unde
 
 The chain helps detect accidental or offline edits but is not tamper-proof against a malicious process running as the same user. Export logs to an external append-only collector for stronger evidence.
 
-## Reporting
+## Reporting a vulnerability
 
-Do not file live credentials, tunnel IDs paired with keys, private logs, or sensitive tool outputs in a public issue. Revoke exposed Platform keys immediately.
+**Do not open a public issue for a security vulnerability.** Use GitHub's private vulnerability reporting for this repository:
+
+<https://github.com/Veer376/chatgpt-local-system/security/advisories/new>
+
+Include enough information to reproduce and assess the issue without including unrelated private data:
+
+- affected Local System commit/version and platform;
+- attack prerequisites and trust boundary crossed;
+- minimal reproduction or proof of concept;
+- expected versus actual authorization/approval behavior;
+- whether credentials, local files, command execution, extension sessions, or public network routes are involved;
+- suggested mitigation if you have one.
+
+Do not include live credentials, real private project content, tunnel IDs paired with keys, personal ChatGPT screenshots, or sensitive logs. Use synthetic values and minimal test fixtures. If a credential has already been exposed, revoke/rotate it immediately rather than waiting for triage.
+
+Please allow maintainers reasonable time to investigate and coordinate a fix before public disclosure. This project does not currently promise a formal response-time SLA.
+
+Ordinary bugs and hardening ideas that are not exploitable can use the public issue templates.
+
+## Supported security versions
+
+Security fixes target the current `main` branch and the most recent tagged release when one exists. Older commits/releases receive fixes on a best-effort basis unless a release is explicitly marked supported in [the support matrix](SUPPORT.md).

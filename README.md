@@ -148,6 +148,8 @@ Read the [security model](docs/SECURITY.md) and [operational notes](docs/OPERATI
 
 ## Contributing
 
-Issues, bug reproductions, accessibility improvements, and focused pull requests are welcome. The biggest open product experience gap is easy, secure OAuth/device onboarding for ngrok. See the [technical reference](docs/TECHNICAL_REFERENCE.md) for internals.
+Issues, bug reproductions, accessibility improvements, and focused pull requests are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), the [support matrix](docs/SUPPORT.md), and [CHANGELOG.md](CHANGELOG.md). Security vulnerabilities must use the [private reporting process](docs/SECURITY.md#reporting-a-vulnerability), not a public issue.
+
+The biggest open product experience gap is easy, secure OAuth/device onboarding for ngrok. See the [technical reference](docs/TECHNICAL_REFERENCE.md) for internals and the [privacy/data-flow note](docs/PRIVACY.md) before connecting sensitive projects.
 
 **License:** [MIT](LICENSE). Local System is an independent project, not an official OpenAI or ngrok product.

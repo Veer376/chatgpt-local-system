@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/Veer376/chatgpt-local-system/security/advisories/new
+    about: Do not put vulnerabilities, credentials, or sensitive logs in public issues.
+  - name: Installation and support matrix
+    url: https://github.com/Veer376/chatgpt-local-system/blob/main/docs/SUPPORT.md
+    about: Check supported platforms, setup paths, and current limitations before filing an issue.
