@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="t d">
+<title id="t">Local System</title><desc id="d">An original geometric lowercase l in phosphor green beside a routed lowercase s in off-white, on a dark rounded square.</desc>
+<rect width="128" height="128" rx="27" fill="#080B08"/>
+<rect x="2" y="2" width="124" height="124" rx="25" fill="none" stroke="#34412F" stroke-width="2"/>
+<!-- Bespoke 'l': a terminal stem whose foot follows the baseline. -->
+<path d="M24 27H37V81H59V95H24Z" fill="#D4FF52"/>
+<!-- Bespoke 's': squared terminals and routed joints, never a font glyph. -->
+<path d="M101 46H79C68 46 63 52 63 60V64C63 72 69 75 79 78L87 80C90 81 92 83 92 85V87C92 89 90 90 86 90H64V101H87C100 101 105 94 105 85V82C105 74 99 70 89 67L80 64C77 63 76 61 76 59V58C76 56 78 56 81 56H101Z" fill="#F2F5E9"/></svg>

@@ -14,7 +14,7 @@ function pngSize(path) {
   };
 }
 
-test("Local System extension ships the ~ls icon at Chrome manifest sizes", () => {
+test("Local System extension ships matching ls brand icons at Chrome manifest sizes", () => {
   assert.deepEqual(manifest.icons, {
     "16": "icons/local-system-16.png",
     "32": "icons/local-system-32.png",
@@ -31,9 +31,23 @@ test("Local System extension ships the ~ls icon at Chrome manifest sizes", () =>
   }
 });
 
-test("canonical extension icon remains code-defined SVG", () => {
+test("extension, website and canonical SVG use the identical original paths", () => {
   const svg = readFileSync(new URL("icons/local-system.svg", extensionRoot), "utf8");
-  assert.match(svg, /Local System ~ls icon/);
-  assert.match(svg, /stroke="#10A37F"/);
-  assert.match(svg, />ls<\/text>/);
+  const canonical = readFileSync(new URL("../../assets/brand/mark.svg", import.meta.url), "utf8");
+  const favicon = readFileSync(new URL("../../website/favicon.svg", import.meta.url), "utf8");
+  assert.equal(svg, canonical);
+  assert.equal(favicon, canonical);
+  assert.match(svg, /Bespoke 'l'/);
+  assert.match(svg, /Bespoke 's'/);
+  assert.match(svg, /#D4FF52/);
+  assert.doesNotMatch(svg, /<text\b/); // icon remains font independent
+  assert.doesNotMatch(svg, /<(?:image|script|foreignObject)\b/); // no embedded remote artwork or scripts
+});
+
+test("social preview is the same raster on the website and in the brand kit", () => {
+  const source = readFileSync(new URL("../../assets/brand/social-preview.png", import.meta.url));
+  const target = readFileSync(new URL("../../website/social-preview.png", import.meta.url));
+  assert.deepEqual(source, target);
+  assert.equal(source.readUInt32BE(16), 1200);
+  assert.equal(source.readUInt32BE(20), 630);
 });

@@ -1,56 +1,44 @@
-<!-- LOGO SLOT: replace this existing square icon with the finalized Local System identity later. -->
+<p align="center">
+  <img src="assets/brand/readme-hero.svg" alt="Local System — Your computer, inside ChatGPT. An acid-green and off-white ls logo beside a terminal listing files, skills, tools and workspace." width="1100" />
+</p>
+
 <div align="center">
-  <img src="extensions/local-system/icons/local-system-128.png" alt="Local System icon" width="72" />
-  <h1>Local System</h1>
-  <p><strong>Bring your computer into ChatGPT.</strong></p>
-  <p>Attach local files and skills while you write a prompt. Browse your project beside the chat. Let ChatGPT work with your local tools and files.</p>
+  <p><strong>Open-source local tools, files and visual feedback for ChatGPT.</strong></p>
   <p>
-    <a href="https://veer376.github.io/chatgpt-local-system/">Website</a> ·
-    <a href="#get-started">Get started</a> ·
-    <a href="#features">Try the shortcuts</a> ·
-    <a href="docs/INSTALL-SECURE-TUNNEL.md">Install guide</a> ·
-    <a href="docs/INSTALL-NGROK.md">ngrok</a>
+    <a href="https://veer376.github.io/chatgpt-local-system/">Explore the website</a> &nbsp;·&nbsp;
+    <a href="#get-started">Get started</a> &nbsp;·&nbsp;
+    <a href="docs/INSTALL-SECURE-TUNNEL.md">Installation guide</a> &nbsp;·&nbsp;
+    <a href="SECURITY.md">Security</a> &nbsp;·&nbsp;
+    <a href="https://github.com/Veer376/chatgpt-local-system/issues">Issues</a>
   </p>
 </div>
 
 ---
 
-## Features
+## See the work. Stay in control.
 
-Local System adds four things to the ChatGPT workflow: **context in the composer, a project workspace, visual feedback, and local execution**.
+ChatGPT can do more than discuss your code: with Local System, it can inspect authorized project files, ask before classified destructive operations, and let you review or annotate its results without leaving the conversation.
 
 <p align="center">
-  <img src="docs/assets/features/feature-map.svg" width="1000" alt="Visual map of Local System features: // skills and @@ files in the ChatGPT composer, a project workspace, rich previews and annotations, and local command execution with approval." />
+  <img src="docs/assets/features/feature-map.svg" alt="Local System capability map. Large panels illustrate an explicit deletion approval dialog and a Markdown preview with an annotation. Smaller panels show the // skill picker and @@ file attachment." width="1100" />
 </p>
 
 <table>
   <tr>
-    <td width="50%" valign="top">
-      <strong><code>//</code> Skills + <code>@@</code> Files</strong><br />
-      Search and attach local skills or real project files while writing the prompt. A chosen skill supplies its registered <code>SKILL.md</code>; a chosen file becomes a real ChatGPT attachment.
-    </td>
-    <td width="50%" valign="top">
-      <strong>Project workspace + clickable paths</strong><br />
-      Browse, search, edit, preview, and explicitly save local project files beside the conversation. Click authorized file paths in ChatGPT replies to open the actual file.
-    </td>
+    <td width="50%" valign="top"><strong>Approval before risky operations</strong><br />Classified destructive commands request human confirmation by default. Other commands may still have side effects; the local bridge is <strong>not an OS sandbox</strong>.</td>
+    <td width="50%" valign="top"><strong>Preview, annotate, iterate</strong><br />Review code, Markdown, sandboxed HTML, images, PDFs and video in the companion workspace. Send selected-text or timestamped feedback directly back to ChatGPT.</td>
   </tr>
   <tr>
-    <td valign="top">
-      <strong>Previews + annotations</strong><br />
-      Inspect images, PDFs, video, Markdown, sandboxed HTML, and code. Send selected-text notes or timestamped video feedback back as structured <code>[Annotations]</code>.
-    </td>
-    <td valign="top">
-      <strong>Local tools + managed tasks + approval</strong><br />
-      Run commands, apply patches, follow longer-running tasks, discover skills, and keep thread-aware state. Classified destructive operations require confirmation by default.
-    </td>
+    <td valign="top"><strong><code>//</code> Skills + <code>@@</code> Files</strong><br />Search and attach your registered <code>SKILL.md</code> instructions or actual authorized local project files from the ChatGPT composer.</td>
+    <td valign="top"><strong>Project workspace + 11 MCP tools</strong><br />Browse files, open response paths, make patches, run commands and follow managed tasks through a fixed, inspectable local toolset.</td>
   </tr>
 </table>
 
-**Try the two composer features:** `//code-review` + `@@src/server.js` → “Review this file using the attached skill.”
+**Try the composer:** <code>//code-review</code> + <code>@@src/server.js</code> → “Review this file using the attached skill.”
 
-<sub>The composer pickers, workspace, previews, and annotations require the Chrome extension. MCP tools work through the bridge independently. Local shell execution is high-authority and is not an OS sandbox.</sub>
+<sub>The composer shortcuts, visual workspace and annotations require the companion Chrome extension. The MCP bridge can be used independently. Selected context and tool results may be sent to ChatGPT.</sub>
 
-[Extension features and shortcuts →](extensions/local-system/README.md)
+<p><a href="https://veer376.github.io/chatgpt-local-system/#playground"><strong>Try the interactive product playground →</strong></a> &nbsp;·&nbsp; <a href="extensions/local-system/README.md">Extension features and shortcuts →</a></p>
 
 ## Get started
 
