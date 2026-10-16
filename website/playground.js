@@ -258,10 +258,6 @@
       form.requestSubmit();
     }
   });
-  document.querySelectorAll("[data-open-demo]").forEach(button => button.addEventListener("click", () => {
-    setActiveDemo(button.dataset.openDemo, {focus: true});
-    root.scrollIntoView({behavior: motionReduced ? "instant" : "smooth", block:"start"});
-  }));
   document.querySelector(".demo-tabs").addEventListener("keydown", event => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
     event.preventDefault();

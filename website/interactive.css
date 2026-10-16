@@ -91,8 +91,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible,
 .feature-card-copy h3{font-size:clamp(29px,3vw,43px);line-height:1.05;letter-spacing:-.055em;margin:20px 0 13px;max-width:520px}
 .feature-card-copy p{max-width:500px;font-size:14px;color:#97a492;line-height:1.6}
 .feature-eyebrow{color:var(--acid);font-size:10px;letter-spacing:.08em}
-.feature-try{display:inline-flex;align-items:center;margin-top:19px;background:transparent;border:0;border-bottom:1px solid #637b43;color:var(--acid);padding:5px 0;cursor:pointer;font-size:12px}
-.feature-try:hover{color:#ecffbd;border-bottom-color:#ecffbd}
 .feature-visual{position:relative;min-height:300px;border:1px solid #2c3928;border-bottom:0;border-radius:11px 11px 0 0;overflow:hidden;background:linear-gradient(150deg,#151d13,#070a07)}
 .feature-visual-top{font-size:9px;color:#71806b;letter-spacing:.08em;padding:15px 19px;border-bottom:1px solid #263123}
 .approval-illustration{max-width:355px;margin:26px auto 48px;background:#101710;border:1px solid #445738;border-radius:10px;padding:21px;box-shadow:0 19px 50px #0007}
@@ -117,7 +115,6 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible,
 .feature-card-medium h3{margin:13px 0 10px;font-size:26px}
 .feature-inline-demo{border:1px solid #33412a;background:#0c140a;border-radius:6px;display:flex;justify-content:space-between;gap:10px;padding:13px;margin-top:22px;color:#c1ddaf;font-size:11px}
 .feature-inline-demo small{color:#77956d;font-size:10px}
-.feature-card-medium .feature-try{margin-top:13px}
 
 @media(max-width:1060px){
  .playground-window{grid-template-columns:155px minmax(0,1fr)}
@@ -150,4 +147,64 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible,
  .floating-comment{right:4px;width:205px}
  .annotation-paper h4{font-size:30px}
  .feature-card-medium{min-height:270px}
+}
+
+/* Compact editorial feature grid: UI examples remain, without inflated card real estate. */
+.feature-intro{padding-top:82px}
+.feature-intro .section-kicker{margin-bottom:18px}
+.feature-intro-grid{gap:40px}
+.feature-intro h2{font-size:clamp(38px,4.1vw,57px)}
+.feature-intro .section-lead{font-size:15px;line-height:1.55}
+.feature-grid{margin-top:26px}
+.feature-card-large.feature-primary{min-height:390px;padding:24px 25px 0;gap:15px}
+.feature-card-copy h3{font-size:clamp(25px,2.45vw,34px);margin:12px 0 9px}
+.feature-card-copy p{font-size:12.5px;line-height:1.5;max-width:490px}
+.feature-eyebrow{font-size:9px}
+.feature-visual{min-height:190px;flex:1}
+.feature-visual-top{font-size:8px;padding:10px 14px}
+.approval-illustration{max-width:310px;margin:13px auto 25px;padding:12px 15px}
+.approval-shield{width:25px;height:25px}
+.approval-illustration-head b{font-size:12px}
+.approval-illustration-head small{font-size:9px}
+.approval-illustration code{margin-top:12px;padding:9px;font-size:10px}
+.approval-illustration-meta{margin-top:6px;font-size:8px}
+.approval-illustration-actions{margin-top:9px}
+.approval-illustration-actions span,.approval-illustration-actions strong{padding:6px 10px}
+.feature-visual-caption{bottom:8px;font-size:8px}
+.annotation-paper{top:39px;left:11%;padding:14px 18px}
+.annotation-paper h4{font-size:28px;margin:15px 0 0}
+.annotation-highlight{margin-top:6px}
+.floating-comment{width:180px;bottom:28px;padding:10px}
+.floating-comment p{font-size:10px}
+.feature-card-medium{min-height:220px;padding:22px 25px}
+.feature-card-medium .feature-icon{font-size:18px}
+.feature-card-medium h3{font-size:22px;margin:12px 0 8px}
+.feature-card-medium p{font-size:12px;line-height:1.5}
+.feature-inline-demo{margin-top:17px;padding:10px 12px}
+.feature-grid>.feature-card:not(.feature-primary):not(.feature-card-medium){min-height:155px;padding:21px 25px}
+.feature-grid>.feature-card:not(.feature-primary):not(.feature-card-medium) .feature-icon{font-size:20px}
+.feature-grid>.feature-card:not(.feature-primary):not(.feature-card-medium) h3{font-size:18px;margin:15px 0 7px}
+.feature-grid>.feature-card:not(.feature-primary):not(.feature-card-medium) p{font-size:12px;line-height:1.5}
+@media(max-width:1060px){
+ .feature-intro{padding-top:70px}
+ .feature-card-large.feature-primary{min-height:405px;padding:23px 22px 0}
+ .feature-intro h2{font-size:clamp(38px,4.6vw,52px)}
+}
+@media(max-width:700px){
+ .feature-intro{padding-top:72px}
+ .feature-intro-grid{gap:16px}
+ .feature-intro .section-kicker{margin-bottom:12px}
+ .feature-intro h2{font-size:42px}
+ .feature-intro .section-lead{font-size:13px}
+ .feature-grid{margin-top:22px}
+ .feature-card-large.feature-primary{min-height:390px;padding:22px 20px 0;gap:12px}
+ .feature-card-copy h3{font-size:27px;margin:11px 0 8px}
+ .feature-card-copy p{font-size:12px}
+ .feature-visual{min-height:185px}
+ .annotation-paper{top:37px;padding:14px 16px}
+ .annotation-paper h4{font-size:26px}
+ .floating-comment{width:175px;bottom:24px}
+ .approval-illustration{margin:13px 12px 25px;padding:12px}
+ .feature-card-medium{min-height:208px;padding:21px 20px}
+ .feature-grid>.feature-card:not(.feature-primary):not(.feature-card-medium){min-height:140px;padding:21px 20px}
 }
