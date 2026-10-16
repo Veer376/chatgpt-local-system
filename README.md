@@ -1,415 +1,124 @@
-# chatgpt-local-system
+<!-- BRAND SLOT: Replace the icon below with the finalized Local System SVG / wordmark in P2. -->
+<div align="center">
+  <img src="extensions/local-system/icons/local-system-128.png" width="80" height="80" alt="Local System icon (temporary brand asset)" />
+  <h1>Local System</h1>
+  <p><strong>Your computer, inside your ChatGPT workflow.</strong></p>
+  <p>Run local tools, navigate project files, review changes, and open generated artifacts without leaving ChatGPT.</p>
+  <p>
+    <a href="#get-started">Get started</a> ·
+    <a href="docs/INSTALL-NGROK.md">ngrok setup</a> ·
+    <a href="docs/INSTALL-SECURE-TUNNEL.md">Private tunnel setup</a> ·
+    <a href="docs/SECURITY.md">Security model</a>
+  </p>
+</div>
 
-A production-grade, cross-platform implementation of the **ChatGPT Web → OpenAI Secure MCP Tunnel → local workstation** workflow.
+> **Early open-source release.** Local System is a developer tool that runs with the privileges of your computer account. It is **not** a sandbox. Start with a test project, review tool requests, and don't expose the MCP server on a public unauthenticated endpoint.
 
-The bridge exposes a deliberately small **11-tool** model-facing contract. Local execution, file operations, conversation-scoped workspace/todo/runtime state, human confirmation, and skills are the supported surface.
+<div align="center">
+  <img src="docs/assets/setup/setup-overview.png" alt="Four-step setup overview showing ngrok documentation, OpenAI tunnel guide, Chrome Extensions settings, and ChatGPT custom MCP documentation" width="920" />
+  <br />
+  <sub>Real public documentation screenshots, including Google’s highlighted Chrome setup UI. The current app screens may differ; follow the linked guides for up-to-date steps.</sub>
+</div>
 
-The local MCP endpoint binds to loopback by default. Tunnel connectivity is initiated outbound by `tunnel-client` over HTTPS—no public port or inbound firewall rule is required. Commands, project scripts, package managers, tests, and delegated agents may make their own outbound connections.
+## What makes Local System different?
 
-> [!IMPORTANT]
-> This bridge gives an AI agent the authority of the local user running it. Destructive operations pause inside the originating tool call for explicit human confirmation through macOS/Telegram; this is **not an OS sandbox**. For sensitive work, use a dedicated OS account, VM/container, filesystem snapshots, and limited workspace roots.
+This isn't simply a shell exposed to an AI model. It combines a **small, inspectable MCP tool surface** with a **ChatGPT-native file workspace**. The emphasis is on keeping your coding conversation and your local project in the same place.
 
-> [!WARNING]
-> **Do not publish the local MCP port using an unprotected ngrok or other public HTTP tunnel.** The documented OpenAI Secure MCP Tunnel workflow intentionally uses no application-level MCP authentication. That trust model does **not** apply to a public reverse proxy. A public endpoint can otherwise expose command execution and file access. Configure an independently authenticated proxy and verify it before enabling any public tunnel; ngrok is not required for the standard installation.
+<table>
+<tr><td width="50%"><strong>🗂️ Your project beside the chat</strong><br/>A Chrome side-panel workspace with a file tree, tabs, searching, in-place editing, project switching, and change visibility.</td><td><strong>🔎 File references you can open</strong><br/>Resolve file paths mentioned in ChatGPT against the selected workspace, then preview supported files without hunting through Finder.</td></tr>
+<tr><td><strong>📝 Annotations in context</strong><br/>Mark up file selections and rendered Markdown; attach timestamped notes to videos and copy structured feedback back into the conversation.</td><td><strong>🎞️ More than code previews</strong><br/>Rendered Markdown, sandboxed HTML, images, PDFs, and locally streamed video in the same workspace. Supported formats vary by context.</td></tr>
+<tr><td><strong>⏳ Tasks that survive long runs</strong><br/>Run commands, monitor managed tasks, and keep conversation-scoped progress, todos, and runtime checkpoints available across tool calls.</td><td><strong>🛡️ Human approval, local control</strong><br/>Explicit confirmation for classified destructive operations by default, restricted file roots, audit events, and a small fixed set of 11 MCP tools.</td></tr>
+</table>
 
-> **Optional ngrok setup is for experienced users until the authenticated onboarding flow is complete.** On macOS, `install-ngrok` refuses to install without a strong `MCP_TOKEN` in the per-user `runtime.env`. Your MCP client must send that token in an `Authorization: Bearer` header. Configure the ngrok ingress to expose **only `/mcp`**, never `/local-ui/*`, `/local-file/*` or `/local-image/*`, and verify unauthenticated requests get HTTP 401/403 before sharing the URL. Simply installing ngrok does not supply these protections. If your ChatGPT connection cannot send an authorization header, do not use this ngrok path.
+Those are the project's design priorities—not a claim that competing tools can't implement similar features. The [extension guide](extensions/local-system/README.md) explains the workspace in more detail.
 
----
+<!-- DEMO SLOT (P1): Add a 45–90 second GIF/video recorded in a sanitized demo project here. -->
 
-## Why this exists
+## Get started
 
-ChatGPT can reason about a bug, but without tools a human still has to copy patches, run commands, paste logs, switch to a browser, and report results. This bridge closes that execution loop while keeping the workstation private:
-
-- Operate a development machine from ChatGPT Web—including from another device.
-- Reuse the ChatGPT product surface as the orchestrator while keeping local Codex optional.
-- Avoid public tunnel URLs and inbound network exposure.
-- Keep tool authority, workspace roots, output limits, and destructive approvals under code you control.
-- Preserve the original rule: **create/update/edit are allowed; delete/reset/quit must be previewed and confirmed first**.
-
-## Architecture
-
-```text
-ChatGPT Web / desktop
-        │
-        ▼
-OpenAI Secure MCP Tunnel
-        ▲
-        │ outbound HTTPS
-  tunnel-client (local)
-        │ loopback HTTP
-        ▼
-http://127.0.0.1:8765/mcp
-        │
- ┌──────┼──────────┬───────────┐
- files  tasks     human       skills
- patch  workspace approval    discovery
-```
-
-The bridge and tunnel are separate processes so they can be tested, restarted, logged, and supervised independently.
-
-## Exact 11-tool contract
-
-The model-facing names are frozen and contract-tested:
-
-| Family         | Tools                                          |
-| -------------- | ---------------------------------------------- |
-| Context        | `bridge_context`                               |
-| Workspace      | `workspace`                                    |
-| Files          | `display`, `view_image`, `apply_patch`         |
-| Commands/tasks | `execute_command`, `manage_task`               |
-| Human/state    | `request_user_input`, `write_todos`, `runtime_memory` |
-| Skills         | `discover_skills`                              |
-
-`bridge_context` returns the essential Local System instructions, platform/project orientation, durable memory/skill context, runtime memory, open todo summary, and Local System scratch directory. `workspace` selects the current project per conversation. `execute_command` covers local inspection/search/build/test work; `apply_patch` covers ordinary text-file creation and edits.
-
-The model-facing contract intentionally stays small. Internal or deferred implementations may exist when they are still part of an active project direction, but they are not advertised as model tools until they are deliberately registered.
-
-### request_user_input
-
-Pass optional `content` and/or one `question` object. Call `request_user_input` with `{}` to
-resume an existing conversation-scoped questionnaire. A question without options is free text;
-`multiple: true` requires options and allows several choices. Partial answers survive between
-observing calls.
-
-The macOS dialog and Telegram are offered at once; the first surface answered wins. The underlying
-questionnaire remains alive when an observing MCP call is cancelled. The human-facing
-questionnaire TTL is five minutes, while each observing connector call yields earlier so it can
-resume cleanly before the upstream tool-call deadline.
-
-### runtime_memory
-
-`runtime_memory` stores one compact conversation-scoped working snapshot for long-running tasks. It
-supports `read`, `write`, and `clear`; `write` replaces the complete snapshot rather than merging
-fragments. `bridge_context` includes the current snapshot automatically, and the long-turn checkpoint
-asks the agent to refresh it before handing control back.
-
-Known limits:
-
-- Telegram has no native multi-select control. It is emulated with toggle rows plus a Done button,
-  so a multi-select answer costs one extra tap versus a single choice.
-- The macOS panel is a fixed size. Around eight or more options crowd the question text, which
-  scrolls rather than growing the window.
-- Because both surfaces are live at once, the macOS panel is deliberately not always-on-top: it
-  stays visible across app switches, but must not sit over Telegram and block answering there.
-- The panel needs a pyobjc-capable interpreter. Set `MACOS_ASK_USER_PYTHON` to pin one — otherwise
-  the helper uses whichever `python3` is first on `PATH`, so launching the bridge from a shell with
-  a virtualenv active silently disables the native prompt with no error.
-- `ASK_USER_DEBUG=1` records question and answer routing to `ASK_USER_DEBUG_FILE`
-  (default `/tmp/ask-user-debug.log`). It writes to that file directly rather than through stdout,
-  which was observed to swallow the output depending on how the bridge was launched.
-
-## Platform support
-
-The MCP server, workspace/file primitives, managed commands, human interaction service, and skill discovery are supported on macOS, Linux, and Windows where their documented runtime dependencies are available. Native desktop automation, browser/CDP, Office, web-fetch, capture/audio, scheduler, and standalone Git/project wrapper tools are not part of this bridge contract.
-
----
-
-## Quick start: local server
-
-### 1. Requirements
-
-Required:
-
-- Node.js 20+
-- Git
-- `tunnel-client` from OpenAI
-- An eligible ChatGPT web account with Developer Mode available (managed workspaces may require an admin grant)
-- An OpenAI Platform organization with tunnel permissions and a runtime API key
-
-Recommended/optional:
-
-```bash
-# macOS examples
-brew install openai/tools/tunnel-client
-brew install ripgrep ffmpeg tesseract
-# interceptor and codex are optional integrations
-```
-
-Windows users should install the current `tunnel-client` release from [openai/tunnel-client](https://github.com/openai/tunnel-client/releases).
-
-### 2. Install
+You need **Node.js 20+**, npm, a supported ChatGPT account/workspace that can add a custom MCP server, and **Chrome** if you want the file-workspace extension. The underlying bridge works without the extension. Some setup and features are platform-specific.
 
 ```bash
 git clone https://github.com/Veer376/chatgpt-local-system.git
 cd chatgpt-local-system
 npm ci
-cp .env.example .env
 ```
 
-Edit `.env` and grant only the directories ChatGPT actually needs:
+**Choose your connection method:**
 
-```dotenv
-HOST=127.0.0.1
-PORT=8765
-WORKSPACE_ROOTS=/Users/you/projects
-DEFAULT_WORKSPACE=/Users/you/projects/example-project
-ALLOW_TOOL_ROOT_REGISTRATION=false
-INCLUDE_COMMON_WORKSPACE_ROOTS=false
-TOOL_UI=false
-TOOL_UI_APPLY_PATCH=true
-# TOOL_UI_DISPLAY=true
-```
+| Path | Who it's for | State |
+| --- | --- | --- |
+| **[ngrok / public HTTPS](docs/INSTALL-NGROK.md)** | Developers who already have a ChatGPT-compatible OAuth protection layer or secure gateway | **Advanced / manual only.** Not yet a one-click connection. |
+| **[OpenAI Secure MCP Tunnel](docs/INSTALL-SECURE-TUNNEL.md)** | Developers who want a currently supported private connection with no public MCP URL | **Working setup path.** Requires OpenAI Platform tunnel configuration. |
 
-On Windows, separate multiple roots with `;`. On macOS/Linux, use `:`.
+**Why isn't ngrok one command?** An unprotected `ngrok http 8765` would make local command and file operations accessible on the internet. ChatGPT's standard custom-MCP flow doesn't let an ordinary user simply paste a custom bearer token to solve that. Our goal is **install → sign in → approve device → connect**, but hosted OAuth/device pairing is **not implemented yet**. See the [ngrok guide](docs/INSTALL-NGROK.md) for exactly what's available.
 
-`TOOL_UI` controls optional rich ChatGPT tool views. `apply_patch` defaults to its compact diff viewer even when the global switch is off; set `TOOL_UI_APPLY_PATCH=false` to disable it. Other tools can be overridden with `TOOL_UI_<TOOL_NAME>`, for example `TOOL_UI_EXECUTE_COMMAND=false` or `TOOL_UI_DISPLAY=true`. Tool execution and returned content are unchanged. Destructive confirmation is handled separately through the macOS/Telegram human interaction service.
+### Install the optional Chrome extension
 
-The workspace settings have distinct roles:
+1. Open **`chrome://extensions`** in Chrome.
+2. Turn on **Developer mode** and select **Load unpacked**.
+3. Select **`chatgpt-local-system/extensions/local-system`**.
+4. Copy the extension ID from the installed extension card and set `LOCAL_EXTENSION_ORIGIN=chrome-extension://YOUR_EXTENSION_ID` in the bridge's configuration. Restart the bridge after changing it.
+5. Open [ChatGPT](https://chatgpt.com/) and click the Local System toolbar action to access the workspace.
 
-- `WORKSPACE_ROOTS` authorizes parent directories that may contain many projects.
-- `DEFAULT_WORKSPACE` supplies the initial current project when no persisted selection exists; it must be inside `WORKSPACE_ROOTS` and accepts exactly one directory.
-- `workspace` with `action: "save"` stores an optional project shortcut with name and description metadata without granting access or selecting it. Saved projects are not an exhaustive list of accessible directories.
-- `workspace` with `action: "open"` selects a directory within an authorized project root as the current project workspace and cannot select Local System scratch.
-- `BRIDGE_SCRATCH_DIR` is the parent for automatically created, conversation-scoped machine-side scratch directories. `bridge_context` returns the calling conversation's full `localScratchDir`; agents pass that value explicitly as `cwd` for non-project work and never construct its hashed suffix.
+<img src="docs/assets/setup/chrome-extensions.png" width="720" alt="Google Chrome Developers screenshot showing Developer mode and Load unpacked controls" />
 
-Authorized project roots and Local System scratch constrain exposed file tools and command working directories; they are not an OS sandbox for subprocesses launched through `execute_command` or `manage_task`. No Desktop, Documents, or home-directory project roots are implicit unless `INCLUDE_COMMON_WORKSPACE_ROOTS=true`. Add project roots to `.env`, or explicitly opt into broader authority only if you accept that risk.
+[Chrome's official instructions for loading unpacked extensions](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
-### 3. Diagnose, start, and smoke-test
+**First safe test:** Open a disposable/sample project. In ChatGPT, select the Local System tool and request *“Show me the current workspace and list the top-level files. Don't modify anything.”* Confirm that its path and tools match the project you authorized.
 
-```bash
-npm run doctor
-npm start
-```
-
-In another terminal:
-
-```bash
-npm run smoke
-```
-
-Expected result: exactly 11 model tools, an `apply_patch` create/edit round trip, `execute_command` inspection/search in a unique directory under `BRIDGE_SCRATCH_DIR`, and structured `bridge_context` output.
-
-Health endpoints:
-
-```bash
-curl http://127.0.0.1:8765/healthz
-curl http://127.0.0.1:8765/readyz
-```
-
----
-
-## Connect through OpenAI Secure MCP Tunnel
-
-### 1. Create the OpenAI resources
-
-1. Create a tunnel at <https://platform.openai.com/settings/organization/tunnels>.
-2. Associate it with the ChatGPT workspace that should discover it.
-3. Create a runtime API key at <https://platform.openai.com/settings/organization/api-keys> with Tunnels **Read + Use**.
-4. Enable ChatGPT Developer Mode/custom apps in the target workspace.
-
-Platform tunnel roles and ChatGPT workspace Developer Mode are separate permissions.
-
-### 2. Guided configuration
-
-macOS/Linux:
-
-```bash
-./scripts/connect-chatgpt.sh
-```
-
-Windows PowerShell:
-
-```powershell
-.\scripts\windows\configure-tunnel.ps1
-```
-
-The wizard seeds a user-only `runtime.env` from the repository `.env` (intentionally omitting `MCP_TOKEN` because the documented tunnel profile uses `sample_mcp_remote_no_auth`), prompts separately for workspace roots/default workspace, initializes the profile from the configured MCP endpoint, and runs `tunnel-client doctor`. API keys are not embedded in service descriptors or process arguments. For persistent services, `runtime.env` is authoritative—edit it rather than `.env`, then restart the affected service.
-
-Default runtime config locations:
-
-- macOS/Linux: `~/.config/chatgpt-local-system/runtime.env` (`0600`)
-- Windows: `%APPDATA%\chatgpt-local-system\runtime.env` (user-only ACL)
-
-### 3. Equivalent manual commands
-
-```bash
-export CONTROL_PLANE_API_KEY="sk-..."
-tunnel-client init \
-  --sample sample_mcp_remote_no_auth \
-  --profile sol-local-bridge \
-  --tunnel-id tunnel_0123456789abcdef0123456789abcdef \
-  --health-listen-addr 127.0.0.1:8766 \
-  --mcp-server-url http://127.0.0.1:8765/mcp
-
-tunnel-client doctor --profile sol-local-bridge --explain
-tunnel-client run --profile sol-local-bridge
-```
-
-Leave both `npm start` and `tunnel-client run` running, use `npm run start:all` to start them in dependency order, or install the user services below. The tunnel wrapper waits for `/readyz` before launching `tunnel-client`, avoiding a cold-start probe race. If `HOST`/`PORT` changes, rerun tunnel profile initialization so its `--mcp-server-url` stays in sync. Service status also checks tunnel readiness at `http://127.0.0.1:8766/readyz`.
-
-### 4. Attach ChatGPT on the website or desktop app
-
-See **[ChatGPT website and desktop setup](docs/CHATGPT_SETUP.md)** for the complete, current walkthrough and troubleshooting guide.
-
-#### ChatGPT website
-
-1. On ChatGPT web, open **Settings → Security and login** and enable **Developer mode**.
-2. Open <https://chatgpt.com/plugins>, select **+**, and create a developer-mode connection.
-3. Choose **Connection = Tunnel**, select/paste your `tunnel_...` ID, and choose **No Authentication**.
-4. Verify that discovery returns exactly 11 model tools.
-5. In a new conversation, choose **Developer mode** from the composer's **+** menu, enable the app, and ask:
-
-> Use SOL Local Bridge only. Call `bridge_context`, then call `workspace` with `action: "list"`. If `currentProjectWorkspace` is set, use `execute_command` for a bounded read-only inspection such as `git status --short` and a shallow file listing. Do not modify anything.
-
-#### ChatGPT desktop app
-
-OpenAI currently registers custom MCP connections on the website first. Sign into the desktop app with the same account/workspace and check its Plugins/Developer Mode picker. If the connection does not appear directly, copy its `plugin_asdk_app_...` technical ID from the website URL and use `@plugin-creator` in desktop **Work mode** to package it with a personal marketplace entry. Restart the desktop app, install it from the Plugins Directory, and test it in a new conversation. The detailed guide explains each step and the difference between `tunnel_...` and `plugin_asdk_app_...` IDs.
-
-If **Developer mode** is absent on the website, confirm account/workspace eligibility and—on a managed workspace—ask its admin for access. If Work mode or the Plugins Directory is absent from the desktop app, update it; if the surface remains unavailable for that account/build, use the website integration.
-
----
-
-## Run persistently
-
-Desktop automation must run in the logged-in user's session. Do not run it as a macOS LaunchDaemon, Windows Session-0 service, or headless system service if you expect UI control.
-
-### macOS LaunchAgents
-
-```bash
-./scripts/service-macos.sh install
-./scripts/service-macos.sh status
-./scripts/service-macos.sh logs
-# start restores services; restart preserves launchd supervision
-# intentional stop/uninstall requires --confirm-downtime
-```
-
-Two LaunchAgents are installed: one for the MCP server and one for `tunnel-client`. The plist files contain only paths—not secrets.
-
-### Linux systemd user services
-
-```bash
-./scripts/service-linux.sh install
-./scripts/service-linux.sh status
-./scripts/service-linux.sh logs
-```
-
-For an interactive desktop, keep these as user services. A dedicated system user is appropriate only for headless file/git/build workflows. User services normally follow the user's login session; intentional headless persistence may require `loginctl enable-linger <user>` and is not universally available in containers, minimal distributions, or WSL.
-
-### Windows Scheduled Tasks
-
-```powershell
-.\scripts\windows\service.ps1 install
-.\scripts\windows\service.ps1 status
-.\scripts\windows\service.ps1 logs
-```
-
-Tasks run at user logon with limited privileges and `MultipleInstances=IgnoreNew`. They do not request highest privileges.
-
----
-
-## Destructive approval model
-
-Destructive shell operations and patch-based file deletion are intercepted before execution. The originating tool call stays pending while the bridge asks the human through the shared macOS/Telegram interaction service.
-
-- **Approve** executes the exact original operation.
-- **Deny** cancels it.
-- A **custom response** cancels it and returns that text to the agent as a human instruction.
-- Timeout executes nothing and tells the agent to retry the original call only if the operation is still necessary.
-
-Only the explicit Approve option authorizes execution; typed text never authorizes a destructive action. Approval and execution events are audited by operation fingerprint.
-
----
-
-## Security defaults
-
-- Loopback-only bind is enforced. Non-loopback operation is intentionally refused; any external TLS/auth proxy requires a separate security design and keeps the bridge itself on loopback.
-- Host-header validation against DNS rebinding.
-- Optional bearer authentication with timing-safe comparison.
-- Explicit project roots; tool-driven authority expansion disabled. The calling conversation's directory beneath `BRIDGE_SCRATCH_DIR` is its only automatic non-project tool root.
-- Internal approvals/process metadata/audit state is never a file-tool root; realpath/symlink-aware containment and protected credential/system paths are enforced.
-- Bridge-owned process IDs only, with start-identity checks and process-tree termination.
-- Bounded request bodies, command output, timeouts, concurrent tool calls, task-log size, record count, and retention.
-- Hash-chained, redacted audit JSONL under `~/.chatgpt-local-system/audit/`.
-- Runtime API keys live only in a user-owned secret file. The tunnel key is excluded from the MCP server, and secret-like environment variables are stripped from command and process children unless explicitly allowlisted.
-
-Tool arguments/results can include source code or local data and are sent through the calling OpenAI product. Do not expose a workspace whose data policy forbids that processing.
-
----
-
-## Historical tool recovery
-
-Dormant, intentionally unexposed tool implementations were removed to keep the runtime source aligned with the actual MCP contract. If one of those implementations is needed later, search Git history for the commit titled **`Remove dormant unexposed tool implementations`** and recover only the specific capability being reconsidered.
-
-## Agent-runtime compatibility caveat
-
-The current bridge integrates with runtime conventions supplied by ChatGPT, not only generic MCP calls. In particular:
-
-- Tool results rely on the agent runtime consuming MCP `structuredContent`; `content` is intentionally concise while the complete machine-readable payload is returned in `structuredContent`.
-- Conversation-scoped workspace and todo state rely on the caller supplying a stable conversation/thread identity in request metadata. The current ChatGPT path provides this through `openai/session` (with `threadId` supported as a fallback).
-- App-only helper tools rely on MCP UI visibility metadata being respected by the client so UI plumbing is not presented as model-facing tools.
-
-Before moving this bridge to another agent/runtime, verify equivalent support for result payloads, stable conversation identity, and app-only tool visibility. If any assumption is missing, adapt that runtime or add a compatibility layer in the bridge before treating the alternate agent as functionally equivalent. Otherwise calls can succeed while the agent misses result data, thread-scoped state becomes unavailable, or UI-only helpers leak into the model tool surface.
-
-## Development and validation
-
-```bash
-npm run lint
-npm test                 # unit + integration
-npm run test:unit
-npm run test:integration
-npm run check            # lint + all tests
-npm run doctor -- --json
-npm run doctor -- --live       # require local /readyz
-# For service configuration, load runtime.env without echoing secrets:
-node scripts/run-with-env.mjs ~/.config/chatgpt-local-system/runtime.env -- npm run doctor -- --tunnel
-```
-
-The test suite covers:
-
-- exact 11-tool contract
-- authenticated Streamable HTTP MCP lifecycle
-- workspace and symlink escape protection
-- file preview/image/patch round trips
-- destructive detection and inline human confirmations
-- managed-task ownership/logging/input/stopping
-- project command detection
-
-## Repository layout
+## How the pieces fit together
 
 ```text
-src/
-  server.js              Streamable HTTP MCP server
-  tool-contract.js       frozen exact 11-tool list
-  lib/                   policy, paths, task/process state, audit, conversation state
-  platform/              lightweight OS identity summary
-  tools/                 exposed tool-family modules
-docs/
-  CHATGPT_SETUP.md       website + desktop app connection guide
-  SECURITY.md            trust boundaries and hardening
-  OPERATIONS.md          service and incident runbook
-scripts/
-  connect-chatgpt.sh     Unix tunnel setup wizard
-  service-macos.sh       LaunchAgent lifecycle
-  service-linux.sh       systemd-user lifecycle
-  windows/               PowerShell setup/service scripts
-  smoke.mjs              live MCP smoke test
-examples/python-minimal/  original small FastMCP teaching example
+ChatGPT + Local System MCP plugin
+          │
+          ├── OpenAI Secure MCP Tunnel (private, recommended today)
+          │                         OR
+          └── HTTPS + OAuth gateway (ngrok, advanced/under development)
+                                      │
+                                  Local Node bridge
+                                  127.0.0.1:8765
+                                    /mcp
+                                      │
+                            Authorized local computer
+                           Files · Commands · Tasks · Skills
+
+Chrome extension ── authenticated loopback session ── file workspace
 ```
 
-## Operational caveats
+Local System exposes a fixed **11-tool MCP contract**, including `bridge_context`, `workspace`, `execute_command`, `apply_patch`, `display`, `view_image`, `manage_task`, `request_user_input`, `write_todos`, `runtime_memory`, and `discover_skills`.
 
-- The workstation must be awake, logged in, connected, and running both services.
-- macOS Accessibility/Screen Recording/Microphone permissions are granted to the executable actually running the bridge (Terminal/Node/interceptor).
-- Linux Wayland support varies by compositor.
-- Windows desktop automation requires an interactive user session.
-- Cross-platform DOCX/XLSX support covers document data, not Office macros, rendering fidelity, or Excel formula recalculation.
-- Attaching browser automation to a personal profile exposes that profile's signed-in sessions to the agent.
+The Chrome extension is optional, but its file tree, previews, annotations, and local sidebar depend on the running local bridge. The terminal bridge is **not** a desktop app or a hosted account service.
 
-## References
+## Safety and limitations
 
-- [ChatGPT Developer Mode](https://developers.openai.com/api/docs/guides/developer-mode)
-- [OpenAI Secure MCP Tunnel guide](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels)
-- [Package plugins for ChatGPT desktop/Codex](https://developers.openai.com/plugins/build/plugins)
-- [openai/tunnel-client](https://github.com/openai/tunnel-client)
-- [OpenAI private MCP server announcement](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
-- [Model Context Protocol](https://modelcontextprotocol.io/)
+- **High authority:** shell commands execute with the privileges of the local OS user. Workspace path limits are **not an operating-system sandbox**.
+- **Approval defaults:** destructive actions classified by the application require approval unless a user deliberately opts out; this is not a guarantee that every shell side effect is detected.
+- **Network:** keep `/mcp` private unless you have a verified ChatGPT-compatible OAuth gateway. Never tunnel `/local-ui/*`, `/local-file/*`, or `/local-image/*` to the public internet.
+- **Extension:** installed manually using Chrome Developer mode. It depends on ChatGPT's evolving web interface, so UI updates can require fixes.
+- **Account access:** custom MCP connection availability and UI vary by ChatGPT plan and workspace policy.
+- **Privacy:** connected tool calls can transmit file names/content, command outputs, and other selected data to ChatGPT. Do not connect folders containing secrets you don't intend to share.
 
-## License
+Read [Security](docs/SECURITY.md) and [operational guidance](docs/OPERATIONS.md) before broadening access.
 
-MIT. `tunnel-client` itself is OpenAI's separate Apache-2.0 project; it is not vendored here.
+<details>
+<summary><strong>Troubleshooting and useful links</strong></summary>
 
-## ChatGPT browser extension
+| Issue | Check |
+| --- | --- |
+| ChatGPT can't find the MCP tools | Keep the bridge and tunnel running; confirm `http://127.0.0.1:8765/readyz` returns HTTP 200. |
+| Extension shows no files | Confirm the server is running and `LOCAL_EXTENSION_ORIGIN` matches the current Chrome extension ID. |
+| Tunnel is missing | Confirm Platform tunnel permissions and association with the correct ChatGPT workspace. |
+| Browser UI changed | Reload the unpacked extension and refresh ChatGPT. |
+| macOS/Linux service setup | See [operations](docs/OPERATIONS.md). |
+| Security question | See [security model](docs/SECURITY.md). |
 
-The production unpacked Chrome extension is maintained at [`extensions/local-system/`](extensions/local-system/README.md). It provides clickable local-file references, inline image/PDF previews, todos, local file pickers, the right-side file workspace, and annotations.
+**Official references:** [ChatGPT custom MCP setup](https://developers.openai.com/api/docs/guides/custom-mcp-server) · [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) · [ngrok downloads](https://ngrok.com/download) · [Chrome unpacked extensions](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
-The extension uses the **same Local System server** as MCP at `http://127.0.0.1:8765`; it does not run a separate local server. `npm run start:all` builds the extension bundle, launches `src/server.js`, and launches the configured secure MCP tunnel. See the extension README for Chrome loading instructions and shortcuts.
+</details>
+
+## Contribute
+
+Issues, test cases, documentation fixes, and focused pull requests are welcome. The first priorities are a smooth authenticated ngrok onboarding flow, more reliable browser integration, clearer cross-platform installation, and the next version of the visual identity. See the [technical reference](docs/TECHNICAL_REFERENCE.md) for deeper internals.
+
+**License:** [MIT](LICENSE). Local System is an independent open-source project, not an official OpenAI or ngrok product.
