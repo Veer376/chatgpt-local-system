@@ -1,42 +1,66 @@
-<!-- BRAND SLOT: Replace the icon below with the finalized Local System SVG / wordmark in P2. -->
+<!-- LOGO SLOT: replace this existing square icon with the finalized Local System identity later. -->
 <div align="center">
-  <img src="extensions/local-system/icons/local-system-128.png" width="80" height="80" alt="Local System icon (temporary brand asset)" />
+  <img src="extensions/local-system/icons/local-system-128.png" alt="Local System icon" width="72" />
   <h1>Local System</h1>
-  <p><strong>Your computer, inside your ChatGPT workflow.</strong></p>
-  <p>Run local tools, navigate project files, review changes, and open generated artifacts without leaving ChatGPT.</p>
+  <p><strong>Bring your computer into ChatGPT.</strong></p>
+  <p>Attach local files and skills while you write a prompt. Browse your project beside the chat. Let ChatGPT work with your local tools and files.</p>
   <p>
     <a href="#get-started">Get started</a> ·
-    <a href="docs/INSTALL-NGROK.md">ngrok setup</a> ·
-    <a href="docs/INSTALL-SECURE-TUNNEL.md">Private tunnel setup</a> ·
-    <a href="docs/SECURITY.md">Security model</a>
+    <a href="#the-two-shortcuts">Try the shortcuts</a> ·
+    <a href="docs/INSTALL-SECURE-TUNNEL.md">Install guide</a> ·
+    <a href="docs/INSTALL-NGROK.md">ngrok</a>
   </p>
 </div>
 
-> **Early open-source release.** Local System is a developer tool that runs with the privileges of your computer account. It is **not** a sandbox. Start with a test project, review tool requests, and don't expose the MCP server on a public unauthenticated endpoint.
+---
 
-<div align="center">
-  <img src="docs/assets/setup/setup-overview.png" alt="Four-step setup overview showing ngrok documentation, OpenAI tunnel guide, Chrome Extensions settings, and ChatGPT custom MCP documentation" width="920" />
-  <br />
-  <sub>Real public documentation screenshots, including Google’s highlighted Chrome setup UI. The current app screens may differ; follow the linked guides for up-to-date steps.</sub>
-</div>
+## The two shortcuts
 
-## What makes Local System different?
-
-This isn't simply a shell exposed to an AI model. It combines a **small, inspectable MCP tool surface** with a **ChatGPT-native file workspace**. The emphasis is on keeping your coding conversation and your local project in the same place.
+Type directly in the **ChatGPT message composer**. Local System adds two searchable pickers so you do not need to manually open Finder, copy a file path, or paste a skill's instructions.
 
 <table>
-<tr><td width="50%"><strong>🗂️ Your project beside the chat</strong><br/>A Chrome side-panel workspace with a file tree, tabs, searching, in-place editing, project switching, and change visibility.</td><td><strong>🔎 File references you can open</strong><br/>Resolve file paths mentioned in ChatGPT against the selected workspace, then preview supported files without hunting through Finder.</td></tr>
-<tr><td><strong>📝 Annotations in context</strong><br/>Mark up file selections and rendered Markdown; attach timestamped notes to videos and copy structured feedback back into the conversation.</td><td><strong>🎞️ More than code previews</strong><br/>Rendered Markdown, sandboxed HTML, images, PDFs, and locally streamed video in the same workspace. Supported formats vary by context.</td></tr>
-<tr><td><strong>⏳ Tasks that survive long runs</strong><br/>Run commands, monitor managed tasks, and keep conversation-scoped progress, todos, and runtime checkpoints available across tool calls.</td><td><strong>🛡️ Human approval, local control</strong><br/>Explicit confirmation for classified destructive operations by default, restricted file roots, audit events, and a small fixed set of 11 MCP tools.</td></tr>
+  <tr>
+    <th width="50%">Attach a skill</th>
+    <th width="50%">Attach a local file</th>
+  </tr>
+  <tr>
+    <td><h3><kbd>//</kbd> Skills</h3>Type <code>//</code> followed by a skill name to search your locally registered skills.<br /><br /><code>//code-review</code><br /><br />Choose a result → Local System adds a removable skill chip and the <code>/skill-name</code> marker to your prompt. On send, the registered <code>SKILL.md</code> content is supplied to ChatGPT.</td>
+    <td><h3><kbd>@@</kbd> Files</h3>Type <code>@@</code> followed by a file name to search authorized local project files.<br /><br /><code>@@src/server.js</code><br /><br />Choose a result → Local System attaches the actual file through ChatGPT's composer, not merely a text path. Search prioritizes the active workspace.</td>
+  </tr>
 </table>
 
-Those are the project's design priorities—not a claim that competing tools can't implement similar features. The [extension guide](extensions/local-system/README.md) explains the workspace in more detail.
+**Example:** Type `//code-review` to select a review skill, then `@@src/server.js` to attach the source file. Ask ChatGPT to review it using that skill. The exact available skills and files depend on your local configuration.
 
-<!-- DEMO SLOT (P1): Add a 45–90 second GIF/video recorded in a sanitized demo project here. -->
+> Attaching a file or skill sends its selected content to ChatGPT. Do not select confidential files or skill instructions unless you intend to share them with ChatGPT.
+
+## More than a local terminal
+
+The composer shortcuts are one part of the experience. Local System combines a small MCP bridge with a ChatGPT-integrated workspace, rather than leaving you to move between a shell, an editor, and a conversation.
+
+<table>
+  <tr>
+    <td width="50%"><strong>Project workspace beside the chat</strong><br />A native Chrome side panel for browsing the project tree, switching files, searching, editing source, and reviewing changes. Open files without leaving your conversation.</td>
+    <td><strong>Clickable paths in ChatGPT replies</strong><br />Paths in responses open the corresponding authorized local file. Relative paths resolve within the selected project or conversation context instead of searching your entire computer.</td>
+  </tr>
+  <tr>
+    <td><strong>Previews that match the file</strong><br />View images, PDFs, videos, rendered Markdown and sandboxed HTML. Move from source to preview in the workspace, with supported preview types depending on the file.</td>
+    <td><strong>Feedback with context</strong><br />Annotate files and selected text, leave timestamped video notes, and pass structured <code>[Annotations]</code> back into the ChatGPT composer.</td>
+  </tr>
+  <tr>
+    <td><strong>Commands, tasks, and memory</strong><br />Run tools against authorized projects, follow longer-running tasks, carry conversation-scoped todos, and resume work from runtime checkpoints.</td>
+    <td><strong>Local control and approvals</strong><br />Eleven fixed MCP tools, configured file roots, audit information, and confirmation for classified destructive operations by default. This is <strong>not</strong> an OS sandbox.</td>
+  </tr>
+</table>
+
+These capabilities are Local System's focus, **not** a claim that no other project has similar features. For shortcuts, workspace behavior and keyboard commands, see the [extension reference](extensions/local-system/README.md).
+
+<!-- PRODUCT DEMO SLOT: Add a real, sanitized screenshot or short GIF of the Local System side panel/composer here. Do not use unrelated website screenshots. -->
 
 ## Get started
 
-You need **Node.js 20+**, npm, a supported ChatGPT account/workspace that can add a custom MCP server, and **Chrome** if you want the file-workspace extension. The underlying bridge works without the extension. Some setup and features are platform-specific.
+### 1. Clone and install
+
+You need **Node.js 20+**, npm, Git, and a supported ChatGPT account/workspace with custom MCP access. Chrome is required for the optional browser extension.
 
 ```bash
 git clone https://github.com/Veer376/chatgpt-local-system.git
@@ -44,81 +68,91 @@ cd chatgpt-local-system
 npm ci
 ```
 
-**Choose your connection method:**
+### 2. Choose how ChatGPT connects
 
-| Path | Who it's for | State |
-| --- | --- | --- |
-| **[ngrok / public HTTPS](docs/INSTALL-NGROK.md)** | Developers who already have a ChatGPT-compatible OAuth protection layer or secure gateway | **Advanced / manual only.** Not yet a one-click connection. |
-| **[OpenAI Secure MCP Tunnel](docs/INSTALL-SECURE-TUNNEL.md)** | Developers who want a currently supported private connection with no public MCP URL | **Working setup path.** Requires OpenAI Platform tunnel configuration. |
+<table>
+  <tr><th>Connection</th><th>Status and next step</th></tr>
+  <tr>
+    <td><strong><a href="docs/INSTALL-NGROK.md">ngrok / HTTPS</a></strong><br />Our goal: a simple sign-in and device-pairing setup.</td>
+    <td><strong>Advanced only today.</strong> Requires an independently configured ChatGPT-compatible OAuth gateway. The automated OAuth connection is not yet built.<br /><a href="docs/INSTALL-NGROK.md">Understand ngrok and its security requirements →</a></td>
+  </tr>
+  <tr>
+    <td><strong><a href="docs/INSTALL-SECURE-TUNNEL.md">OpenAI Secure MCP Tunnel</a></strong><br />No publicly reachable MCP URL.</td>
+    <td><strong>Working setup path today.</strong> Requires OpenAI Platform tunnel access and the local tunnel client.<br /><a href="docs/INSTALL-SECURE-TUNNEL.md">Follow the installation guide →</a></td>
+  </tr>
+</table>
 
-**Why isn't ngrok one command?** An unprotected `ngrok http 8765` would make local command and file operations accessible on the internet. ChatGPT's standard custom-MCP flow doesn't let an ordinary user simply paste a custom bearer token to solve that. Our goal is **install → sign in → approve device → connect**, but hosted OAuth/device pairing is **not implemented yet**. See the [ngrok guide](docs/INSTALL-NGROK.md) for exactly what's available.
+**Important:** Do not run `ngrok http 8765` and connect with “No authentication.” Local System can execute local commands. A public, anonymous endpoint would give others access. The [ngrok guide](docs/INSTALL-NGROK.md) explains the safe architecture without pretending it is one-click today.
 
-### Install the optional Chrome extension
+### 3. Add the Chrome extension (optional)
 
-1. Open **`chrome://extensions`** in Chrome.
-2. Turn on **Developer mode** and select **Load unpacked**.
-3. Select **`chatgpt-local-system/extensions/local-system`**.
-4. Copy the extension ID from the installed extension card and set `LOCAL_EXTENSION_ORIGIN=chrome-extension://YOUR_EXTENSION_ID` in the bridge's configuration. Restart the bridge after changing it.
-5. Open [ChatGPT](https://chatgpt.com/) and click the Local System toolbar action to access the workspace.
+The MCP bridge can work without it; the extension adds the file workspace, the `//` and `@@` pickers, previews, and annotations.
 
-<img src="docs/assets/setup/chrome-extensions.png" width="720" alt="Google Chrome Developers screenshot showing Developer mode and Load unpacked controls" />
+1. Open `chrome://extensions` in Chrome.
+2. Turn on **Developer mode**, then select **Load unpacked**.
+3. Select this repository's `extensions/local-system` folder.
+4. Configure `LOCAL_EXTENSION_ORIGIN=chrome-extension://YOUR_EXTENSION_ID` for the running bridge. Reload the extension and refresh ChatGPT.
 
-[Chrome's official instructions for loading unpacked extensions](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
+<p>
+  <a href="https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked">
+    <img src="docs/assets/setup/chrome-extensions.png" width="620" alt="Official Chrome extension installation screenshot showing Developer mode and Load unpacked. Click to open Google's step-by-step guide." />
+  </a>
+</p>
+<sub>Screenshot: Google Chrome Developers. Click the image for the full installation guide—not an enlarged image file.</sub>
 
-**First safe test:** Open a disposable/sample project. In ChatGPT, select the Local System tool and request *“Show me the current workspace and list the top-level files. Don't modify anything.”* Confirm that its path and tools match the project you authorized.
+[Full extension configuration](extensions/local-system/README.md)
 
-## How the pieces fit together
+### 4. Run a read-only test
+
+In ChatGPT, enable the Local System MCP connection and ask:
+
+> Show my current project workspace and list the top-level files. Don't modify anything.
+
+Then try typing `//` or `@@` in the composer with the Chrome extension enabled.
+
+## How it works
 
 ```text
-ChatGPT + Local System MCP plugin
-          │
-          ├── OpenAI Secure MCP Tunnel (private, recommended today)
-          │                         OR
-          └── HTTPS + OAuth gateway (ngrok, advanced/under development)
-                                      │
-                                  Local Node bridge
-                                  127.0.0.1:8765
-                                    /mcp
-                                      │
-                            Authorized local computer
-                           Files · Commands · Tasks · Skills
-
-Chrome extension ── authenticated loopback session ── file workspace
+ChatGPT ── Secure MCP Tunnel / authorized HTTPS gateway ── Local System bridge
+                                                               │
+                                                     Local files and commands
+                                                     Tasks, skills, approval
+                                                               │
+Chrome extension ───────── authenticated loopback API ─────────┘
+       │
+       └── // skills · @@ files · workspace · previews · annotations
 ```
 
-Local System exposes a fixed **11-tool MCP contract**, including `bridge_context`, `workspace`, `execute_command`, `apply_patch`, `display`, `view_image`, `manage_task`, `request_user_input`, `write_todos`, `runtime_memory`, and `discover_skills`.
+The bridge exposes **11 MCP tools**: `bridge_context`, `workspace`, `display`, `view_image`, `apply_patch`, `execute_command`, `manage_task`, `request_user_input`, `write_todos`, `runtime_memory`, and `discover_skills`.
 
-The Chrome extension is optional, but its file tree, previews, annotations, and local sidebar depend on the running local bridge. The terminal bridge is **not** a desktop app or a hosted account service.
+There is no required Local System cloud account. The extension is a client of the local Node.js server; it is **not** a standalone local filesystem server.
 
-## Safety and limitations
+## Read this before giving it access
 
-- **High authority:** shell commands execute with the privileges of the local OS user. Workspace path limits are **not an operating-system sandbox**.
-- **Approval defaults:** destructive actions classified by the application require approval unless a user deliberately opts out; this is not a guarantee that every shell side effect is detected.
-- **Network:** keep `/mcp` private unless you have a verified ChatGPT-compatible OAuth gateway. Never tunnel `/local-ui/*`, `/local-file/*`, or `/local-image/*` to the public internet.
-- **Extension:** installed manually using Chrome Developer mode. It depends on ChatGPT's evolving web interface, so UI updates can require fixes.
-- **Account access:** custom MCP connection availability and UI vary by ChatGPT plan and workspace policy.
-- **Privacy:** connected tool calls can transmit file names/content, command outputs, and other selected data to ChatGPT. Do not connect folders containing secrets you don't intend to share.
+- **High authority:** local shell processes run with the privileges of the current OS account; workspace roots are not an OS-level sandbox.
+- **Approval model:** classified destructive operations require approval by default. Other commands can still have side effects.
+- **Network:** keep `/mcp` private unless you operate and verify an authenticated gateway. Never publicly expose the local `/local-ui/*`, `/local-file/*`, or `/local-image/*` endpoints.
+- **Data sharing:** selected file attachments, skills, and tool outputs can be sent to ChatGPT.
+- **Compatibility:** the extension depends on ChatGPT's evolving web interface; custom MCP availability varies by plan/workspace.
 
-Read [Security](docs/SECURITY.md) and [operational guidance](docs/OPERATIONS.md) before broadening access.
+Read the [security model](docs/SECURITY.md) and [operational notes](docs/OPERATIONS.md).
 
 <details>
-<summary><strong>Troubleshooting and useful links</strong></summary>
+<summary><strong>Troubleshooting and more documentation</strong></summary>
 
-| Issue | Check |
+| Problem | First check |
 | --- | --- |
-| ChatGPT can't find the MCP tools | Keep the bridge and tunnel running; confirm `http://127.0.0.1:8765/readyz` returns HTTP 200. |
-| Extension shows no files | Confirm the server is running and `LOCAL_EXTENSION_ORIGIN` matches the current Chrome extension ID. |
-| Tunnel is missing | Confirm Platform tunnel permissions and association with the correct ChatGPT workspace. |
-| Browser UI changed | Reload the unpacked extension and refresh ChatGPT. |
-| macOS/Linux service setup | See [operations](docs/OPERATIONS.md). |
-| Security question | See [security model](docs/SECURITY.md). |
+| MCP tools missing | Is the bridge ready at `http://127.0.0.1:8765/readyz`? Is your chosen tunnel running? |
+| `//` or `@@` doesn't appear | Is the unpacked extension loaded and ChatGPT refreshed? Is the loopback bridge available? |
+| File workspace empty | Does `LOCAL_EXTENSION_ORIGIN` match the installed Chrome extension ID? Are the project roots allowed? |
+| Connection setup too complex | Start with the [Secure MCP Tunnel guide](docs/INSTALL-SECURE-TUNNEL.md); ngrok OAuth onboarding is still planned. |
 
-**Official references:** [ChatGPT custom MCP setup](https://developers.openai.com/api/docs/guides/custom-mcp-server) · [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) · [ngrok downloads](https://ngrok.com/download) · [Chrome unpacked extensions](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
+[Existing technical reference](docs/TECHNICAL_REFERENCE.md) · [OpenAI custom MCP setup](https://developers.openai.com/api/docs/guides/custom-mcp-server) · [ngrok documentation](https://ngrok.com/docs/) · [Chrome extension setup](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
 </details>
 
-## Contribute
+## Contributing
 
-Issues, test cases, documentation fixes, and focused pull requests are welcome. The first priorities are a smooth authenticated ngrok onboarding flow, more reliable browser integration, clearer cross-platform installation, and the next version of the visual identity. See the [technical reference](docs/TECHNICAL_REFERENCE.md) for deeper internals.
+Issues, bug reproductions, accessibility improvements, and focused pull requests are welcome. The biggest open product experience gap is easy, secure OAuth/device onboarding for ngrok. See the [technical reference](docs/TECHNICAL_REFERENCE.md) for internals.
 
-**License:** [MIT](LICENSE). Local System is an independent open-source project, not an official OpenAI or ngrok product.
+**License:** [MIT](LICENSE). Local System is an independent project, not an official OpenAI or ngrok product.

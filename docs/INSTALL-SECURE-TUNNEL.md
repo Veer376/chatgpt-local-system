@@ -4,8 +4,6 @@
 
 [← Back to README](../README.md) · [Why not ngrok first?](INSTALL-NGROK.md) · [OpenAI's official tunnel guide](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels)
 
-![Official OpenAI tunnel documentation screenshot](assets/setup/openai-tunnel-docs.png)
-
 ## Before you begin
 
 You need [Node.js 20 or later](https://nodejs.org/en/download), Git, npm, an eligible [ChatGPT account](https://chatgpt.com/), access to [OpenAI Platform](https://platform.openai.com/), and [tunnel-client](https://github.com/openai/tunnel-client/releases/latest). The ability to create custom MCP connections is controlled by your account/workspace administrator; [check eligibility here](https://developers.openai.com/api/docs/guides/custom-mcp-server).
@@ -92,8 +90,6 @@ The bridge should report **11** model-facing tools. The tunnel readiness endpoin
 
 ## 5. Connect it in ChatGPT
 
-![Public screenshot of OpenAI's custom MCP documentation](assets/setup/chatgpt-plugin-docs.png)
-
 1. Open [ChatGPT Plugins](https://chatgpt.com/plugins). Make sure you're using the intended account/workspace and that custom MCP server creation is permitted.
 2. Select **+ → Add custom MCP server**.
 3. Name it **Local System**.
@@ -109,7 +105,9 @@ The ChatGPT Plugins user interface changes over time. [Official step-by-step ins
 
 ## 6. Install the companion Chrome extension (optional)
 
-![Official Chrome Developers screenshot of extension loading controls](assets/setup/chrome-extensions.png)
+<a href="https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked"><img src="assets/setup/chrome-extensions.png" alt="Official Chrome Extensions instructions highlighting Developer mode and Load unpacked. Opens Google's tutorial." width="620" /></a>
+
+<sub>Open the original Google installation guide by clicking the screenshot.</sub>
 
 1. Type `chrome://extensions` into Chrome's address bar.
 2. Enable **Developer mode**, select **Load unpacked**, and choose the cloned `extensions/local-system` folder.

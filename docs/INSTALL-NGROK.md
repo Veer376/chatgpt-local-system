@@ -4,8 +4,6 @@
 
 [← README](../README.md) · [Working private setup](INSTALL-SECURE-TUNNEL.md) · [ngrok docs](https://ngrok.com/docs/) · [ChatGPT MCP authentication](https://developers.openai.com/plugins/build/auth)
 
-![Public ngrok download instructions](assets/setup/ngrok-download.png)
-
 ## The future setup (not available yet)
 
 ```text
