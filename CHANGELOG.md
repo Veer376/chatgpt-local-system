@@ -15,6 +15,10 @@ All notable user-visible changes should be recorded here. The project follows [K
 - Destructive-operation approval is enabled by default.
 - Public documentation now distinguishes the working private tunnel path from the not-yet-automated OAuth/ngrok onboarding path.
 
+### Security
+
+- Updated the MCP TypeScript SDK to a patched release and constrained the transitive MCP client to `2.2.0+` after GitHub Dependabot surfaced the OAuth authorization-server credential-forwarding advisory.
+
 ## [1.0.0] - 2026-10-16
 
 Initial public-source baseline of Local System: the 11-tool MCP bridge, companion Chrome workspace, file/skill composer attachments, previews/annotations, local command/task execution, and platform service scripts.
