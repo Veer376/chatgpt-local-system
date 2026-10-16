@@ -14,6 +14,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23d4ff52'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='monospace' font-size='28' font-weight='700' fill='%23050b05'%3Els%3C/text%3E%3C/svg%3E" />
   <title>Local System — Your computer, inside ChatGPT.</title>
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./interactive.css" />
 </head>
 <body>
   <div class="site-noise" aria-hidden="true"></div>
@@ -53,126 +54,150 @@
         </div>
       </div>
 
-      <div class="hero-terminal reveal" aria-label="Local System terminal listing visualization">
-        <div class="terminal-label mono">ls -la</div>
-        <div class="terminal-list mono" id="hero-listing">
-          <div class="terminal-row is-active"><span>files/</span><small>@@ attach</small></div>
-          <div class="terminal-row"><span>skills/</span><small>// invoke</small></div>
-          <div class="terminal-row"><span>tools/</span><small>11 actions</small></div>
-          <div class="terminal-row"><span>tasks/</span><small>long-running</small></div>
-          <div class="terminal-row"><span>workspace/</span><small>preview + annotate</small></div>
-          <div class="terminal-row"><span>config/</span><small>local</small></div>
-          <div class="terminal-row"><span>logs/</span><small>audit</small></div>
+      <div class="hero-terminal reveal" aria-label="Try the Local System directory listing">
+        <label class="terminal-label mono" for="terminal-filter"><span>❯ ls -la</span><span class="terminal-label-hint">type to filter · ↑↓ navigate</span></label>
+        <input id="terminal-filter" class="terminal-filter mono" type="search" placeholder="filter directories…" autocomplete="off" spellcheck="false" aria-label="Filter Local System features" aria-controls="hero-listing" />
+        <div class="terminal-list mono" id="hero-listing" role="listbox" aria-label="Local System capabilities">
+          <button type="button" class="terminal-row is-active" role="option" aria-selected="true" data-feature="attach" data-path="files"><span>files/</span><small>@@ attach</small></button>
+          <button type="button" class="terminal-row" role="option" aria-selected="false" data-feature="attach" data-path="skills"><span>skills/</span><small>// invoke</small></button>
+          <button type="button" class="terminal-row" role="option" aria-selected="false" data-feature="tools" data-path="tools"><span>tools/</span><small>11 actions</small></button>
+          <button type="button" class="terminal-row" role="option" aria-selected="false" data-feature="tasks" data-path="tasks"><span>tasks/</span><small>long-running</small></button>
+          <button type="button" class="terminal-row" role="option" aria-selected="false" data-feature="preview" data-path="workspace"><span>workspace/</span><small>preview + annotate</small></button>
+          <button type="button" class="terminal-row" role="option" aria-selected="false" data-feature="approval" data-path="config"><span>config/</span><small>local</small></button>
+          <button type="button" class="terminal-row" role="option" aria-selected="false" data-feature="approval" data-path="logs"><span>logs/</span><small>audit</small></button>
         </div>
-        <div class="terminal-cursor mono" aria-hidden="true">▮</div>
+        <p class="terminal-empty mono" id="terminal-empty" hidden>No matching entries. Press Escape to reset.</p>
+        <p class="terminal-hint mono">↵ explore selected capability <span class="terminal-cursor" aria-hidden="true">▮</span></p>
       </div>
     </section>
 
-    <section class="product-stage section-shell reveal" aria-label="Local System product interface preview">
+    <section class="product-stage section-shell reveal" id="playground" aria-label="Interactive Local System product demonstration">
       <div class="stage-toolbar mono">
-        <span>LOCAL SYSTEM / CHATGPT</span>
-        <span class="stage-status"><i></i> connected to local bridge</span>
+        <span>LOCAL SYSTEM / INTERACTIVE PLAYGROUND</span>
+        <span class="stage-status demo-status"><i></i> Sample data · no computer access</span>
       </div>
-      <div class="product-window">
-        <aside class="product-sidebar" aria-label="Product navigation mockup">
-          <div class="sidebar-title">Local System</div>
-          <div class="sidebar-item is-active">＋ New chat</div>
-          <div class="sidebar-item">▱ Files <span>@@</span></div>
-          <div class="sidebar-item">⚡ Skills <span>//</span></div>
-          <div class="sidebar-item">⌘ Commands</div>
-          <div class="sidebar-item">▦ Workspace</div>
-          <div class="sidebar-group mono">RECENT</div>
-          <div class="sidebar-item muted">Fix a bug</div>
-          <div class="sidebar-item muted">Create docs</div>
-          <div class="sidebar-item muted">Review changes</div>
+      <div class="playground-intro">
+        <div><span class="playground-kicker mono">TRY THE WORKFLOW</span><h2>A product tour you can use.</h2></div>
+        <p>Choose a capability, then send a prompt. Every response here is simulated—nothing runs on your machine.</p>
+      </div>
+      <div class="demo-tabs" role="tablist" aria-label="Choose a Local System demo">
+        <button class="demo-tab is-selected" role="tab" aria-selected="true" aria-controls="demo-panel" data-demo="approval" type="button">01 / Approval</button>
+        <button class="demo-tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-demo="preview" type="button">02 / Preview & notes</button>
+        <button class="demo-tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-demo="attach" type="button">03 / Files + skills</button>
+        <button class="demo-tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-demo="tasks" type="button">04 / Long tasks</button>
+        <button class="demo-tab" role="tab" aria-selected="false" aria-controls="demo-panel" data-demo="tools" type="button">05 / 11 MCP tools</button>
+      </div>
+      <div class="product-window playground-window" id="demo-panel" role="tabpanel" aria-label="Selected Local System demonstration">
+        <aside class="product-sidebar playground-sidebar" aria-label="Sample Local System workspace">
+          <div class="sidebar-title">Local System <span class="fake-tag mono">DEMO</span></div>
+          <div class="sidebar-group mono">PROJECT / EXAMPLE</div>
+          <button type="button" class="sidebar-item demo-file" data-demo="preview" data-file="README.md">▱ README.md</button>
+          <button type="button" class="sidebar-item demo-file" data-demo="attach" data-file="src/server.js">▱ src/server.js</button>
+          <button type="button" class="sidebar-item demo-file" data-demo="attach" data-file="skills/code-review">⚡ code-review</button>
+          <div class="sidebar-group mono">WORKFLOWS</div>
+          <button type="button" class="sidebar-item demo-file is-active" data-demo="approval">✓ Approval request</button>
+          <button type="button" class="sidebar-item demo-file" data-demo="tasks">⌘ Managed task</button>
+          <div class="sidebar-privacy mono">Isolated sample project<br />No external requests</div>
         </aside>
-
-        <div class="chat-surface">
-          <div class="chat-thread">
-            <div class="chat-bubble">Review the recent changes using my code-review skill and explain anything risky.</div>
-            <div class="attachment-stack">
-              <div class="attachment-chip"><b class="accent">@@</b><span>src/server.js</span><small>12.4 kB</small></div>
-              <div class="attachment-chip"><b class="accent-alt">//</b><span>code-review</span><small>SKILL.md</small></div>
-            </div>
-            <div class="assistant-line mono"><span>→</span> Reading project context and running targeted checks…</div>
+        <div class="chat-surface playground-chat">
+          <div class="demo-thread" id="demo-thread" role="log" aria-live="polite" aria-relevant="additions text">
+            <div class="demo-bubble demo-user">Can you clean up the old build artifacts?</div>
+            <div class="demo-message"><span class="assistant-identity mono">LOCAL SYSTEM · SIMULATION</span><p>The cleanup would remove files. I'll request your approval before proceeding.</p></div>
+            <div class="demo-approval"><div class="demo-approval-title">Approval required</div><code>rm -rf dist/</code><p>Simulated deletion · your machine will not be modified.</p><div class="approval-actions"><button type="button" data-decision="deny">Deny</button><button type="button" data-decision="approve">Approve example</button></div></div>
           </div>
-          <div class="composer mono"><span class="composer-plus">＋</span><span>Ask anything about your project…</span><kbd>↵</kbd></div>
+          <div class="demo-suggestions mono" aria-label="Example prompts"><span>TRY →</span><button type="button" data-suggest="Show me why this operation needs approval.">Why approval?</button><button type="button" data-suggest="What files would change?">What changes?</button></div>
+          <form id="demo-form" class="demo-composer" autocomplete="off">
+            <label for="demo-prompt" class="sr-only">Type a prompt for the simulated product playground</label>
+            <textarea id="demo-prompt" rows="2" maxlength="500" spellcheck="true" placeholder="Ask Local System about this sample project…">Clean up old build artifacts</textarea>
+            <div class="demo-composer-bottom"><span class="mono">DEMO MODE · Shift + Enter for newline</span><button type="submit" id="demo-send" aria-label="Send demo prompt">Send ↗</button></div>
+          </form>
         </div>
-
-        <div class="code-surface" aria-label="Code preview mockup">
-          <div class="code-topbar mono"><span>src/server.js</span><span>main</span></div>
-          <ol class="code-lines mono">
-            <li><span class="tok-blue">import</span> express <span class="tok-blue">from</span> <span class="tok-green">"express"</span>;</li>
-            <li></li>
-            <li><span class="tok-blue">const</span> app = express();</li>
-            <li><span class="tok-blue">const</span> port = <span class="tok-orange">8765</span>;</li>
-            <li></li>
-            <li>app.<span class="tok-cyan">post</span>(<span class="tok-green">"/mcp"</span>, handler);</li>
-            <li>app.<span class="tok-cyan">listen</span>(port, <span class="tok-blue">()</span> =&gt; {</li>
-            <li>&nbsp;&nbsp;console.log(<span class="tok-green">"Local System ready"</span>);</li>
-            <li>});</li>
-          </ol>
-          <div class="code-note">ChatGPT can inspect, modify and run checks against this authorized project.</div>
+        <div class="code-surface demo-inspector" aria-label="Simulated workspace preview">
+          <div class="code-topbar mono"><span id="inspector-title">operation / approval</span><span>sample</span></div>
+          <div class="inspector-content" id="inspector-content">
+            <div class="inspector-eyebrow mono">COMMAND REVIEW</div>
+            <h3>Changes that need a human.</h3>
+            <p>Proposed filesystem modification</p>
+            <pre class="inspector-code">rm -rf dist/</pre>
+            <div class="inspector-note">The demonstration cannot execute local commands.</div>
+          </div>
+          <div class="inspector-footer mono" id="inspector-footer">PRIVATE BRIDGE · PREVIEW ONLY</div>
         </div>
       </div>
+      <div class="playground-bottom mono"><span>↳ Explore the features above, or write your own example prompt.</span><span>NOT CONNECTED TO YOUR COMPUTER</span></div>
     </section>
-
     <section class="section-shell feature-intro" id="features">
       <div class="section-kicker mono reveal">01 / FEATURES</div>
       <div class="feature-intro-grid">
-        <h2 class="reveal">A local workflow that starts in the composer.</h2>
-        <p class="section-lead reveal">The differentiator is not merely “shell access.” Local System makes files, skills, tasks and artifacts first-class parts of the same ChatGPT workflow.</p>
+        <h2 class="reveal">See the work.<br />Stay in control.</h2>
+        <p class="section-lead reveal">Review what ChatGPT is about to do, inspect its output beside the conversation, and give feedback right where the work happens. Files and skills are a shortcut into that workflow.</p>
       </div>
     </section>
 
     <section class="feature-grid section-shell">
-      <article class="feature-card feature-card-large reveal">
-        <div class="feature-icon accent mono">//</div>
-        <div>
-          <h3>Attach skills as context.</h3>
-          <p>Type <code>//</code> in the ChatGPT composer to search your registered local skills. Selecting one attaches the real <code>SKILL.md</code> instructions to the prompt.</p>
-          <div class="mini-picker mono">
-            <div class="mini-picker-query">// code</div>
-            <div class="mini-picker-row is-selected"><span>// code-review</span><small>review changes</small></div>
-            <div class="mini-picker-row"><span>// add-tests</span><small>generate tests</small></div>
-            <div class="mini-picker-row"><span>// explain-code</span><small>explain implementation</small></div>
+      <article class="feature-card feature-card-large feature-primary reveal">
+        <div class="feature-card-copy">
+          <div class="feature-eyebrow mono">01 / HUMAN-IN-THE-LOOP</div>
+          <h3>Approval before the risky step.</h3>
+          <p>When Local System classifies an operation as destructive, it pauses for your decision. Review the proposed action instead of discovering its effects afterward.</p>
+          <button type="button" class="feature-try" data-open-demo="approval">Try the approval flow ↗</button>
+        </div>
+        <div class="feature-visual approval-visual" aria-label="Example approval dialog">
+          <div class="feature-visual-top mono">LOCAL SYSTEM / PERMISSION REQUEST</div>
+          <div class="approval-illustration">
+            <div class="approval-illustration-head"><span class="approval-shield">!</span><div><b>Permission needed</b><small>Destructive operation detected</small></div></div>
+            <code>rm -rf dist/</code>
+            <div class="approval-illustration-meta mono">Will remove generated build files</div>
+            <div class="approval-illustration-actions"><span>Cancel</span><strong>Approve</strong></div>
           </div>
+          <div class="feature-visual-caption mono">EXPLICIT DECISION · DEFAULT PROTECTION</div>
         </div>
       </article>
 
-      <article class="feature-card feature-card-large reveal">
-        <div class="feature-icon accent-alt mono">@@</div>
-        <div>
-          <h3>Attach the actual local file.</h3>
-          <p>Type <code>@@</code> to search authorized project files and attach the selected file directly through ChatGPT's composer—not just a pasted pathname.</p>
-          <div class="mini-picker mono">
-            <div class="mini-picker-query">@@ src/</div>
-            <div class="mini-picker-row is-selected"><span>@@ src/server.js</span><small>12.4 kB</small></div>
-            <div class="mini-picker-row"><span>@@ src/doctor.js</span><small>8.2 kB</small></div>
-            <div class="mini-picker-row"><span>@@ package.json</span><small>2.1 kB</small></div>
-          </div>
+      <article class="feature-card feature-card-large feature-primary reveal">
+        <div class="feature-card-copy">
+          <div class="feature-eyebrow mono">02 / VISUAL FEEDBACK LOOP</div>
+          <h3>Preview it. Mark it. Change it.</h3>
+          <p>Open local files, rendered HTML, PDFs, images and video beside ChatGPT. Annotate exact content—or a video timestamp—and send that context back to the conversation.</p>
+          <button type="button" class="feature-try" data-open-demo="preview">Try an annotation ↗</button>
         </div>
+        <div class="feature-visual preview-visual" aria-label="Example annotated document">
+          <div class="feature-visual-top mono">README.md / PREVIEW</div>
+          <div class="annotation-paper"><small class="mono">LOCAL SYSTEM / 01</small><h4>Your system.<br />Inside ChatGPT.</h4><div class="annotation-highlight">Inside ChatGPT.<span class="annotation-pin">1</span></div></div>
+          <div class="floating-comment"><span class="mono">01 / ANNOTATION</span><p>Make this headline more specific.</p></div>
+          <div class="feature-visual-caption mono">PREVIEW → ANNOTATE → SEND TO CHAT</div>
+        </div>
+      </article>
+
+      <article class="feature-card feature-card-medium reveal">
+        <span class="feature-icon accent mono">//</span>
+        <h3>Your skills, one shortcut away.</h3>
+        <p>Type <code>//</code> to find a registered skill. Attach its actual <code>SKILL.md</code> instructions to the prompt.</p>
+        <div class="feature-inline-demo mono"><span>// code-review</span><small>SKILL.md attached ✓</small></div>
+        <button type="button" class="feature-try" data-open-demo="attach">Explore attachments ↗</button>
+      </article>
+      <article class="feature-card feature-card-medium reveal">
+        <span class="feature-icon accent-alt mono">@@</span>
+        <h3>Actual files, not copied paths.</h3>
+        <p>Type <code>@@</code> to search authorized files and attach one directly to ChatGPT's composer.</p>
+        <div class="feature-inline-demo mono"><span>@@ src/server.js</span><small>12.4 kB ✓</small></div>
+        <button type="button" class="feature-try" data-open-demo="attach">Explore attachments ↗</button>
       </article>
 
       <article class="feature-card reveal">
         <div class="feature-icon">▱</div>
         <h3>Project workspace</h3>
-        <p>Browse, search and edit authorized project files in the companion side panel.</p>
-      </article>
-      <article class="feature-card reveal">
-        <div class="feature-icon">◫</div>
-        <h3>Preview & annotate</h3>
-        <p>Open Markdown, HTML, images, PDFs and video, then send structured feedback back to chat.</p>
+        <p>Browse, search and edit authorized files beside the chat.</p>
       </article>
       <article class="feature-card reveal">
         <div class="feature-icon">⌘</div>
-        <h3>11 MCP tools</h3>
-        <p>Commands, patching, workspace state, tasks, skills, human input and more through a fixed tool contract.</p>
+        <h3>Long-running tasks</h3>
+        <p>Monitor progress, recover output and resume across tool calls.</p>
       </article>
       <article class="feature-card reveal">
-        <div class="feature-icon">✓</div>
-        <h3>Approval by default</h3>
-        <p>Classified destructive operations pause for explicit human confirmation instead of silently proceeding.</p>
+        <div class="feature-icon">11</div>
+        <h3>A fixed MCP toolset</h3>
+        <p>Commands, patching, human input, files, skills and state.</p>
       </article>
     </section>
 
@@ -311,5 +336,6 @@
   </footer>
 
   <script src="./site.js"></script>
+  <script src="./playground.js"></script>
 </body>
 </html>

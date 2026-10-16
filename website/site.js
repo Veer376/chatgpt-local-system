@@ -14,16 +14,6 @@ if (reducedMotion || !('IntersectionObserver' in window)) {
   reveals.forEach((el) => observer.observe(el));
 }
 
-const listingRows = [...document.querySelectorAll('#hero-listing .terminal-row')];
-if (!reducedMotion && listingRows.length > 1) {
-  let active = 0;
-  window.setInterval(() => {
-    listingRows[active].classList.remove('is-active');
-    active = (active + 1) % listingRows.length;
-    listingRows[active].classList.add('is-active');
-  }, 1650);
-}
-
 for (const button of document.querySelectorAll('[data-copy-target]')) {
   button.addEventListener('click', async () => {
     const target = document.getElementById(button.dataset.copyTarget);
