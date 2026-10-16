@@ -5,7 +5,7 @@ Local System is a high-authority bridge between ChatGPT and a developer's comput
 ## Before opening a pull request
 
 1. Search existing issues and pull requests for the same problem.
-2. For a security vulnerability, **do not open a public issue**. Follow [the security reporting process](docs/SECURITY.md#reporting-a-vulnerability).
+2. For a security vulnerability, **do not open a public issue**. Follow [the security reporting process](SECURITY.md#reporting-a-vulnerability).
 3. Keep a change focused. Large refactors mixed with product changes are difficult to review safely.
 4. Never commit real API keys, tunnel credentials, private logs, user paths, device IDs, or screenshots from a personal ChatGPT account.
 

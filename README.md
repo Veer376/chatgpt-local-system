@@ -130,7 +130,7 @@ There is no required Local System cloud account. The extension is a client of th
 - **Data sharing:** selected file attachments, skills, and tool outputs can be sent to ChatGPT.
 - **Compatibility:** the extension depends on ChatGPT's evolving web interface; custom MCP availability varies by plan/workspace.
 
-Read the [security model](docs/SECURITY.md) and [operational notes](docs/OPERATIONS.md).
+Read the [security model](SECURITY.md) and [operational notes](docs/OPERATIONS.md).
 
 <details>
 <summary><strong>Troubleshooting and more documentation</strong></summary>
@@ -148,7 +148,7 @@ Read the [security model](docs/SECURITY.md) and [operational notes](docs/OPERATI
 
 ## Contributing
 
-Issues, bug reproductions, accessibility improvements, and focused pull requests are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), the [support matrix](docs/SUPPORT.md), and [CHANGELOG.md](CHANGELOG.md). Security vulnerabilities must use the [private reporting process](docs/SECURITY.md#reporting-a-vulnerability), not a public issue.
+Issues, bug reproductions, accessibility improvements, and focused pull requests are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), the [support matrix](docs/SUPPORT.md), and [CHANGELOG.md](CHANGELOG.md). Security vulnerabilities must use the [private reporting process](SECURITY.md#reporting-a-vulnerability), not a public issue.
 
 The biggest open product experience gap is easy, secure OAuth/device onboarding for ngrok. See the [technical reference](docs/TECHNICAL_REFERENCE.md) for internals and the [privacy/data-flow note](docs/PRIVACY.md) before connecting sensitive projects.
 

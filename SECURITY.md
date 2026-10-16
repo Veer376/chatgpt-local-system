@@ -75,4 +75,4 @@ Ordinary bugs and hardening ideas that are not exploitable can use the public is
 
 ## Supported security versions
 
-Security fixes target the current `main` branch and the most recent tagged release when one exists. Older commits/releases receive fixes on a best-effort basis unless a release is explicitly marked supported in [the support matrix](SUPPORT.md).
+Security fixes target the current `main` branch and the most recent tagged release when one exists. Older commits/releases receive fixes on a best-effort basis unless a release is explicitly marked supported in [the support matrix](docs/SUPPORT.md).

@@ -40,7 +40,7 @@ The current repository does not intentionally add a Local System analytics/adver
 
 Do not attach secret files to ChatGPT unless you deliberately intend to send them. The bridge filters secret-like environment variables from command children by default, but generic command authority under the same OS account can still reach files that account can read unless an OS sandbox prevents it.
 
-Runtime/tunnel credentials should stay in the per-user secret configuration and must never be committed or posted in issues. See [the security model](SECURITY.md).
+Runtime/tunnel credentials should stay in the per-user secret configuration and must never be committed or posted in issues. See [the security model](../SECURITY.md).
 
 ## Removing access or local data
 
@@ -50,4 +50,4 @@ Runtime/tunnel credentials should stay in the per-user secret configuration and 
 - Remove the Chrome extension to disable its composer/workspace integration.
 - Delete Local System's config/state/scratch directories manually only after reviewing what you need to keep.
 
-If you are reporting a privacy or security vulnerability, use the [private security reporting process](SECURITY.md#reporting-a-vulnerability), not a public issue.
+If you are reporting a privacy or security vulnerability, use the [private security reporting process](../SECURITY.md#reporting-a-vulnerability), not a public issue.

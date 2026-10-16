@@ -8,7 +8,7 @@ test("public community infrastructure stays discoverable", () => {
   for (const relative of [
     "CONTRIBUTING.md",
     "CHANGELOG.md",
-    "docs/SECURITY.md",
+    "SECURITY.md",
     "docs/PRIVACY.md",
     "docs/SUPPORT.md",
     ".github/ISSUE_TEMPLATE/bug_report.yml",
@@ -19,7 +19,7 @@ test("public community infrastructure stays discoverable", () => {
     assert.equal(existsSync(new URL(`../../${relative}`, import.meta.url)), true, `${relative} must exist`);
   }
 
-  assert.match(read("docs/SECURITY.md"), /security\/advisories\/new/);
+  assert.match(read("SECURITY.md"), /security\/advisories\/new/);
   assert.match(read("docs/PRIVACY.md"), /What can be sent to ChatGPT/);
   assert.match(read("docs/SUPPORT.md"), /CI-covered/);
   assert.match(read("CHANGELOG.md"), /## \[Unreleased\]/);

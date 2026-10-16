@@ -35,4 +35,4 @@ The authoritative model-facing surface is the fixed **11-tool MCP contract** doc
 
 ## Getting help
 
-For reproducible bugs, use the repository bug template and include sanitized diagnostic output. Feature ideas belong in the feature-request template. Security vulnerabilities must use [private vulnerability reporting](SECURITY.md#reporting-a-vulnerability).
+For reproducible bugs, use the repository bug template and include sanitized diagnostic output. Feature ideas belong in the feature-request template. Security vulnerabilities must use [private vulnerability reporting](../SECURITY.md#reporting-a-vulnerability).
