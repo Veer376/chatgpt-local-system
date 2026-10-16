@@ -2,14 +2,15 @@
 
 **Concept:** a geometric, custom-drawn lowercase `l` and `s`, using the command-name shorthand for **list directory contents**. The vertical `l` is phosphor green, the routed `s` is warm white. These paths are custom SVG shapes, **not typeface outlines**, generated imagery, stock icons or third-party logos.
 
-## Canonical sources
+## Canonical source
 
-- `mark.svg` — original square symbol, font-independent; canonical identity for all raster exports.
+- `../../website/favicon.svg` — **the canonical Local System logo**. The website renders this exact file, and every repository/extension logo derivative is rebuilt from it.
+- `mark.svg` — byte-for-byte copy of the website canonical mark for the public brand-kit directory.
 - `wordmark.svg` — mark + `LOCAL SYSTEM` for dark backgrounds; its lettering uses the system sans fallback stack.
 - `readme-hero.svg` — branded GitHub README header with terminal listing.
 - `social-preview.svg` / `social-preview.png` — social preview artwork, 1200 × 630.
 - `../../docs/assets/features/feature-map.svg` — feature artwork in the same visual language.
-- `../../website/favicon.svg`, `../../website/apple-touch-icon.png`, `../../website/social-preview.png`, and `../../extensions/local-system/icons/local-system-{16,32,48,128}.png` are derivative outputs.
+- `../../website/apple-touch-icon.png`, `../../website/social-preview.png`, and `../../extensions/local-system/icons/website-logo-{16,32,48,128}.png` are derivative outputs. The older `local-system-{16,32,48,128}.png` files are also regenerated from the same canonical SVG for compatibility, but the extension manifest intentionally uses the `website-logo-*` names to avoid stale Chrome toolbar-icon caching.
 
 All artwork is locally authored in the repository by `scripts/generate-brand-assets.mjs`. There are no external art assets to attribute or license separately. It is released under the repository's MIT License.
 
@@ -31,6 +32,6 @@ Use the full-color mark at **16px or larger**. Retain at least **12.5% of its wi
 
 ## Rebuild icons
 
-Run `node scripts/generate-brand-assets.mjs` from a checkout with `playwright-core` installed and a Chrome/Chromium binary. Set `CHROME_PATH` if the browser is not at a standard platform location. The script writes all derivative vector and raster files from one design definition; it does not contact external websites.
+Run `node scripts/generate-brand-assets.mjs` from a checkout with `playwright-core` installed and a Chrome/Chromium binary. Set `CHROME_PATH` if the browser is not at a standard platform location. The script reads `website/favicon.svg` as the single source of truth and writes every derivative vector/raster from it; it does not contact external websites.
 
 To set a GitHub repository *social preview*, upload `social-preview.png` under **Settings → General → Social preview**. Merely committing the image does not change GitHub's repository card. The public website, however, references its version through the Open Graph tags.

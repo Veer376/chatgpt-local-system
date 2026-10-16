@@ -16,18 +16,26 @@ function pngSize(path) {
 
 test("Local System extension ships matching ls brand icons at Chrome manifest sizes", () => {
   assert.deepEqual(manifest.icons, {
-    "16": "icons/local-system-16.png",
-    "32": "icons/local-system-32.png",
-    "48": "icons/local-system-48.png",
-    "128": "icons/local-system-128.png",
+    "16": "icons/website-logo-16.png",
+    "32": "icons/website-logo-32.png",
+    "48": "icons/website-logo-48.png",
+    "128": "icons/website-logo-128.png",
   });
   assert.deepEqual(manifest.action?.default_icon, {
-    "16": "icons/local-system-16.png",
-    "32": "icons/local-system-32.png",
+    "16": "icons/website-logo-16.png",
+    "32": "icons/website-logo-32.png",
   });
 
   for (const [size, path] of Object.entries(manifest.icons)) {
     assert.deepEqual(pngSize(path), { width: Number(size), height: Number(size) });
+  }
+});
+
+test("cache-busting extension PNGs are exact website-logo renders", () => {
+  for (const size of [16, 32, 48, 128]) {
+    const active = readFileSync(new URL(`icons/website-logo-${size}.png`, extensionRoot));
+    const compatibility = readFileSync(new URL(`icons/local-system-${size}.png`, extensionRoot));
+    assert.deepEqual(active, compatibility, `${size}px active icon must match canonical compatibility render`);
   }
 });
 

@@ -12,18 +12,17 @@ for (const dir of [brand, icons, site, feature]) fs.mkdirSync(dir, { recursive: 
 
 const color = { bg:"#080B08", page:"#050706", acid:"#D4FF52", paper:"#F2F5E9", muted:"#929B8F", line:"#283326", mint:"#7CFFAD" };
 const xml = s => '<?xml version="1.0" encoding="UTF-8"?>\n' + s + '\n';
-const draw = `<rect width="128" height="128" rx="27" fill="${color.bg}"/>
-<rect x="2" y="2" width="124" height="124" rx="25" fill="none" stroke="#34412F" stroke-width="2"/>
-<!-- Bespoke 'l': a terminal stem whose foot follows the baseline. -->
-<path d="M24 27H37V81H59V95H24Z" fill="${color.acid}"/>
-<!-- Bespoke 's': squared terminals and routed joints, never a font glyph. -->
-<path d="M101 46H79C68 46 63 52 63 60V64C63 72 69 75 79 78L87 80C90 81 92 83 92 85V87C92 89 90 90 86 90H64V101H87C100 101 105 94 105 85V82C105 74 99 70 89 67L80 64C77 63 76 61 76 59V58C76 56 78 56 81 56H101Z" fill="${color.paper}"/>`;
-const mark = xml(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="t d">
-<title id="t">Local System</title><desc id="d">An original geometric lowercase l in phosphor green beside a routed lowercase s in off-white, on a dark rounded square.</desc>
-${draw}</svg>`);
+const canonicalMarkPath = path.join(site, "favicon.svg");
+if (!fs.existsSync(canonicalMarkPath)) throw new Error(`Missing canonical website logo: ${canonicalMarkPath}`);
+const mark = fs.readFileSync(canonicalMarkPath, "utf8");
+const match = mark.match(/<svg\b[^>]*>([\s\S]*?)<\/svg>/i);
+if (!match) throw new Error("website/favicon.svg is not a valid inline SVG");
+const draw = match[1]
+  .replace(/<title\b[^>]*>[\s\S]*?<\/title>/gi, "")
+  .replace(/<desc\b[^>]*>[\s\S]*?<\/desc>/gi, "")
+  .trim();
 fs.writeFileSync(path.join(brand,"mark.svg"),mark);
 fs.writeFileSync(path.join(icons,"local-system.svg"),mark);
-fs.writeFileSync(path.join(site,"favicon.svg"),mark);
 
 const sans = "-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif";
 const mono = "ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace";
@@ -129,14 +128,18 @@ async function pngAssets() {
        await page.setContent(`<!doctype html><html><style>html,body{margin:0;padding:0;background:transparent}img{display:block}</style><img src="${url}" width="${width}" height="${height}">`);
        await page.locator("img").evaluate(img => img.decode());
        await page.locator("img").screenshot({path:out,omitBackground:true,animations:"disabled"});
+       if (process.platform !== "win32") fs.chmodSync(out, 0o644);
      } finally {await page.close();}
    };
    for(const size of [16,32,48,128]) {
-     await render(path.join(brand,"mark.svg"),path.join(icons,`local-system-${size}.png`),size,size);
+     // Render directly from the website logo and use a new filename so Chrome cannot
+     // continue showing a cached pre-branding toolbar icon after an extension reload.
+     await render(canonicalMarkPath,path.join(icons,`website-logo-${size}.png`),size,size);
+     await render(canonicalMarkPath,path.join(icons,`local-system-${size}.png`),size,size);
    }
    await render(path.join(brand,"social-preview.svg"),path.join(brand,"social-preview.png"),1200,630);
    fs.copyFileSync(path.join(brand,"social-preview.png"),path.join(site,"social-preview.png"));
-   await render(path.join(brand,"mark.svg"),path.join(site,"apple-touch-icon.png"),180,180);
+   await render(canonicalMarkPath,path.join(site,"apple-touch-icon.png"),180,180);
  } finally {await browser.close();}
 }
 await pngAssets();

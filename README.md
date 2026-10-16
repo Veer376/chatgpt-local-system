@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="website/favicon.svg" alt="Local System logo" width="76" height="76" />
+</p>
+
+<p align="center">
   <img src="assets/brand/readme-hero.svg" alt="Local System — Your computer, inside ChatGPT. An acid-green and off-white ls logo beside a terminal listing files, skills, tools and workspace." width="1100" />
 </p>
 
