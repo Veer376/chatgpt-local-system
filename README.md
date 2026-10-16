@@ -5,6 +5,7 @@
   <p><strong>Bring your computer into ChatGPT.</strong></p>
   <p>Attach local files and skills while you write a prompt. Browse your project beside the chat. Let ChatGPT work with your local tools and files.</p>
   <p>
+    <a href="https://veer376.github.io/chatgpt-local-system/">Website</a> ·
     <a href="#get-started">Get started</a> ·
     <a href="#features">Try the shortcuts</a> ·
     <a href="docs/INSTALL-SECURE-TUNNEL.md">Install guide</a> ·

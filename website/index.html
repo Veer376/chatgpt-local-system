@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Local System is an open-source bridge that lets ChatGPT work with your local files, skills, tools and project workspace." />
+  <meta name="theme-color" content="#050706" />
+  <link rel="canonical" href="https://veer376.github.io/chatgpt-local-system/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Local System — Your computer, inside ChatGPT." />
+  <meta property="og:description" content="Attach local files and skills, run tools on your computer, and inspect the result beside ChatGPT." />
+  <meta property="og:url" content="https://veer376.github.io/chatgpt-local-system/" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23d4ff52'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='monospace' font-size='28' font-weight='700' fill='%23050b05'%3Els%3C/text%3E%3C/svg%3E" />
+  <title>Local System — Your computer, inside ChatGPT.</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="site-noise" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Local System home">
+      <span class="brand-mark mono">ls</span>
+      <span class="brand-name">Local System</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#install">Install</a>
+      <a href="#security">Security</a>
+    </nav>
+    <a class="button button-small button-outline" href="https://github.com/Veer376/chatgpt-local-system">GitHub ↗</a>
+  </header>
+
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy reveal">
+        <p class="eyebrow mono">OPEN SOURCE <span>·</span> RUNS LOCALLY <span>·</span> BUILT FOR CHATGPT</p>
+        <div class="hero-command" aria-label="ls command">
+          <span class="dollar mono">$</span>
+          <span class="hero-ls mono">ls</span>
+        </div>
+        <h1>Your computer.<br />Inside ChatGPT.</h1>
+        <p class="hero-lead">Local System gives ChatGPT precise access to your local files, skills and tools—while execution stays on the computer you already use.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#install">Get Local System <span>→</span></a>
+          <a class="button button-ghost" href="https://github.com/Veer376/chatgpt-local-system">View on GitHub <span>↗</span></a>
+        </div>
+        <div class="hero-meta mono">
+          <span>11 MCP tools</span>
+          <span>loopback-first</span>
+          <span>human approval</span>
+        </div>
+      </div>
+
+      <div class="hero-terminal reveal" aria-label="Local System terminal listing visualization">
+        <div class="terminal-label mono">ls -la</div>
+        <div class="terminal-list mono" id="hero-listing">
+          <div class="terminal-row is-active"><span>files/</span><small>@@ attach</small></div>
+          <div class="terminal-row"><span>skills/</span><small>// invoke</small></div>
+          <div class="terminal-row"><span>tools/</span><small>11 actions</small></div>
+          <div class="terminal-row"><span>tasks/</span><small>long-running</small></div>
+          <div class="terminal-row"><span>workspace/</span><small>preview + annotate</small></div>
+          <div class="terminal-row"><span>config/</span><small>local</small></div>
+          <div class="terminal-row"><span>logs/</span><small>audit</small></div>
+        </div>
+        <div class="terminal-cursor mono" aria-hidden="true">▮</div>
+      </div>
+    </section>
+
+    <section class="product-stage section-shell reveal" aria-label="Local System product interface preview">
+      <div class="stage-toolbar mono">
+        <span>LOCAL SYSTEM / CHATGPT</span>
+        <span class="stage-status"><i></i> connected to local bridge</span>
+      </div>
+      <div class="product-window">
+        <aside class="product-sidebar" aria-label="Product navigation mockup">
+          <div class="sidebar-title">Local System</div>
+          <div class="sidebar-item is-active">＋ New chat</div>
+          <div class="sidebar-item">▱ Files <span>@@</span></div>
+          <div class="sidebar-item">⚡ Skills <span>//</span></div>
+          <div class="sidebar-item">⌘ Commands</div>
+          <div class="sidebar-item">▦ Workspace</div>
+          <div class="sidebar-group mono">RECENT</div>
+          <div class="sidebar-item muted">Fix a bug</div>
+          <div class="sidebar-item muted">Create docs</div>
+          <div class="sidebar-item muted">Review changes</div>
+        </aside>
+
+        <div class="chat-surface">
+          <div class="chat-thread">
+            <div class="chat-bubble">Review the recent changes using my code-review skill and explain anything risky.</div>
+            <div class="attachment-stack">
+              <div class="attachment-chip"><b class="accent">@@</b><span>src/server.js</span><small>12.4 kB</small></div>
+              <div class="attachment-chip"><b class="accent-alt">//</b><span>code-review</span><small>SKILL.md</small></div>
+            </div>
+            <div class="assistant-line mono"><span>→</span> Reading project context and running targeted checks…</div>
+          </div>
+          <div class="composer mono"><span class="composer-plus">＋</span><span>Ask anything about your project…</span><kbd>↵</kbd></div>
+        </div>
+
+        <div class="code-surface" aria-label="Code preview mockup">
+          <div class="code-topbar mono"><span>src/server.js</span><span>main</span></div>
+          <ol class="code-lines mono">
+            <li><span class="tok-blue">import</span> express <span class="tok-blue">from</span> <span class="tok-green">"express"</span>;</li>
+            <li></li>
+            <li><span class="tok-blue">const</span> app = express();</li>
+            <li><span class="tok-blue">const</span> port = <span class="tok-orange">8765</span>;</li>
+            <li></li>
+            <li>app.<span class="tok-cyan">post</span>(<span class="tok-green">"/mcp"</span>, handler);</li>
+            <li>app.<span class="tok-cyan">listen</span>(port, <span class="tok-blue">()</span> =&gt; {</li>
+            <li>&nbsp;&nbsp;console.log(<span class="tok-green">"Local System ready"</span>);</li>
+            <li>});</li>
+          </ol>
+          <div class="code-note">ChatGPT can inspect, modify and run checks against this authorized project.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell feature-intro" id="features">
+      <div class="section-kicker mono reveal">01 / FEATURES</div>
+      <div class="feature-intro-grid">
+        <h2 class="reveal">A local workflow that starts in the composer.</h2>
+        <p class="section-lead reveal">The differentiator is not merely “shell access.” Local System makes files, skills, tasks and artifacts first-class parts of the same ChatGPT workflow.</p>
+      </div>
+    </section>
+
+    <section class="feature-grid section-shell">
+      <article class="feature-card feature-card-large reveal">
+        <div class="feature-icon accent mono">//</div>
+        <div>
+          <h3>Attach skills as context.</h3>
+          <p>Type <code>//</code> in the ChatGPT composer to search your registered local skills. Selecting one attaches the real <code>SKILL.md</code> instructions to the prompt.</p>
+          <div class="mini-picker mono">
+            <div class="mini-picker-query">// code</div>
+            <div class="mini-picker-row is-selected"><span>// code-review</span><small>review changes</small></div>
+            <div class="mini-picker-row"><span>// add-tests</span><small>generate tests</small></div>
+            <div class="mini-picker-row"><span>// explain-code</span><small>explain implementation</small></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="feature-card feature-card-large reveal">
+        <div class="feature-icon accent-alt mono">@@</div>
+        <div>
+          <h3>Attach the actual local file.</h3>
+          <p>Type <code>@@</code> to search authorized project files and attach the selected file directly through ChatGPT's composer—not just a pasted pathname.</p>
+          <div class="mini-picker mono">
+            <div class="mini-picker-query">@@ src/</div>
+            <div class="mini-picker-row is-selected"><span>@@ src/server.js</span><small>12.4 kB</small></div>
+            <div class="mini-picker-row"><span>@@ src/doctor.js</span><small>8.2 kB</small></div>
+            <div class="mini-picker-row"><span>@@ package.json</span><small>2.1 kB</small></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">▱</div>
+        <h3>Project workspace</h3>
+        <p>Browse, search and edit authorized project files in the companion side panel.</p>
+      </article>
+      <article class="feature-card reveal">
+        <div class="feature-icon">◫</div>
+        <h3>Preview & annotate</h3>
+        <p>Open Markdown, HTML, images, PDFs and video, then send structured feedback back to chat.</p>
+      </article>
+      <article class="feature-card reveal">
+        <div class="feature-icon">⌘</div>
+        <h3>11 MCP tools</h3>
+        <p>Commands, patching, workspace state, tasks, skills, human input and more through a fixed tool contract.</p>
+      </article>
+      <article class="feature-card reveal">
+        <div class="feature-icon">✓</div>
+        <h3>Approval by default</h3>
+        <p>Classified destructive operations pause for explicit human confirmation instead of silently proceeding.</p>
+      </article>
+    </section>
+
+    <section class="workspace-showcase section-shell" aria-labelledby="workspace-title">
+      <div class="section-kicker mono reveal">02 / WORKSPACE</div>
+      <div class="workspace-grid">
+        <div class="workspace-copy reveal">
+          <h2 id="workspace-title">See the result without leaving the conversation.</h2>
+          <p>Generated artifacts and local project files open in a dedicated workspace beside ChatGPT. Review code, render previews and annotate what needs to change.</p>
+          <ul class="check-list">
+            <li>Clickable response paths</li>
+            <li>Rendered Markdown & sandboxed HTML</li>
+            <li>Images, PDF and local video</li>
+            <li>Text and timestamped video annotations</li>
+          </ul>
+        </div>
+        <div class="workspace-visual reveal">
+          <div class="workspace-bar mono"><span>project / local-system</span><span>Preview</span></div>
+          <div class="workspace-body">
+            <div class="file-tree mono">
+              <b>project/</b>
+              <span>├─ src/</span>
+              <span>│&nbsp;&nbsp;├─ server.js</span>
+              <span>│&nbsp;&nbsp;└─ doctor.js</span>
+              <span>├─ skills/</span>
+              <span>├─ website/</span>
+              <span>└─ README.md</span>
+            </div>
+            <div class="preview-pane">
+              <div class="preview-label mono">README.md / PREVIEW</div>
+              <div class="preview-heading">Local System</div>
+              <div class="preview-copy">Your computer, inside ChatGPT.</div>
+              <div class="annotation-line"></div>
+              <div class="annotation-bubble mono">[Annotation] Tighten this section and show @@ files earlier.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="architecture section-shell" id="how-it-works">
+      <div class="section-kicker mono reveal">03 / HOW IT WORKS</div>
+      <div class="architecture-heading">
+        <h2 class="reveal">A small bridge.<br />A clear trust boundary.</h2>
+        <p class="section-lead reveal">The bridge stays loopback-bound. ChatGPT connects through a private Secure MCP Tunnel today, or an independently authenticated HTTPS gateway for advanced setups.</p>
+      </div>
+
+      <div class="architecture-flow reveal" aria-label="Local System architecture">
+        <div class="flow-node"><small class="mono">CONVERSATION</small><b>ChatGPT</b><span>custom MCP connection</span></div>
+        <div class="flow-edge"><span></span><em class="mono">private / authenticated</em></div>
+        <div class="flow-node flow-node-accent"><small class="mono">BRIDGE</small><b>Local System</b><span>127.0.0.1:8765</span></div>
+        <div class="flow-edge"><span></span><em class="mono">authorized roots</em></div>
+        <div class="flow-node"><small class="mono">YOUR MACHINE</small><b>Files · Skills · Tools</b><span>runs as your OS user</span></div>
+      </div>
+    </section>
+
+    <section class="install section-shell" id="install">
+      <div class="section-kicker mono reveal">04 / INSTALL</div>
+      <div class="install-heading">
+        <h2 class="reveal">Start with source.<br /><span class="serif-accent">Keep it local.</span></h2>
+        <p class="section-lead reveal">The working beginner path today uses OpenAI's Secure MCP Tunnel. The ngrok path remains advanced until Local System ships compatible OAuth/device pairing.</p>
+      </div>
+
+      <div class="install-grid">
+        <div class="install-card reveal">
+          <div class="install-card-head"><span class="mono">01</span><b>Clone and install</b></div>
+          <div class="command-box mono"><code id="clone-command">git clone https://github.com/Veer376/chatgpt-local-system.git</code><button type="button" class="copy-button" data-copy-target="clone-command">Copy</button></div>
+          <div class="command-box mono"><code>cd chatgpt-local-system &amp;&amp; npm ci</code></div>
+        </div>
+        <div class="install-card reveal">
+          <div class="install-card-head"><span class="mono">02</span><b>Connect ChatGPT</b></div>
+          <p>Configure a private Secure MCP Tunnel, then add Local System as a custom MCP server in ChatGPT.</p>
+          <a class="text-link" href="https://github.com/Veer376/chatgpt-local-system/blob/main/docs/INSTALL-SECURE-TUNNEL.md">Open the Secure Tunnel guide →</a>
+          <a class="text-link muted-link" href="https://github.com/Veer376/chatgpt-local-system/blob/main/docs/INSTALL-NGROK.md">Advanced ngrok guide ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="security section-shell" id="security">
+      <div class="security-panel reveal">
+        <div>
+          <div class="section-kicker mono">SECURITY NOTE</div>
+          <h2>Powerful access should look powerful.</h2>
+        </div>
+        <div class="security-copy">
+          <p>Local System can execute commands with the privileges of your OS account. It is <strong>not an operating-system sandbox</strong>. Use restricted project roots, keep the MCP bridge private, and review destructive operations before approving them.</p>
+          <div class="security-links">
+            <a href="https://github.com/Veer376/chatgpt-local-system/blob/main/SECURITY.md">Security model ↗</a>
+            <a href="https://github.com/Veer376/chatgpt-local-system/blob/main/docs/PRIVACY.md">Privacy & data flow ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq section-shell" aria-labelledby="faq-title">
+      <div class="section-kicker mono reveal">05 / FAQ</div>
+      <div class="faq-grid">
+        <h2 id="faq-title" class="reveal">Before you connect it.</h2>
+        <div class="faq-list reveal">
+          <details>
+            <summary>Does Local System upload my whole computer?</summary>
+            <p>No. Files remain local unless you select them or a tool reads them as part of an authorized request. Tool results and selected content can be sent to ChatGPT; see the privacy/data-flow document for details.</p>
+          </details>
+          <details>
+            <summary>Is the Chrome extension required?</summary>
+            <p>No. The MCP bridge works without it. The extension adds the file workspace, <code>//</code> skill picker, <code>@@</code> file attachment, previews and annotations.</p>
+          </details>
+          <details>
+            <summary>Can I use ngrok?</summary>
+            <p>Only with an independently configured ChatGPT-compatible authentication layer. Never expose the local <code>/mcp</code> endpoint anonymously.</p>
+          </details>
+          <details>
+            <summary>Which platforms are supported?</summary>
+            <p>The core Node/MCP bridge is CI-covered on macOS, Linux and Windows. Some service, browser and external tunnel paths have more specific limitations.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta section-shell reveal">
+      <p class="eyebrow mono">OPEN SOURCE / MIT</p>
+      <div class="final-command mono"><span>$</span> <b>ls</b><i></i></div>
+      <h2>Your computer is already the workspace.</h2>
+      <p>Give ChatGPT a local address.</p>
+      <div class="hero-actions centered-actions">
+        <a class="button button-primary" href="#install">Install Local System →</a>
+        <a class="button button-ghost" href="https://github.com/Veer376/chatgpt-local-system">Star on GitHub ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer section-shell">
+    <div class="brand footer-brand"><span class="brand-mark mono">ls</span><span class="brand-name">Local System</span></div>
+    <p>Independent open-source project. Not an official OpenAI or ngrok product.</p>
+    <div class="footer-links"><a href="https://github.com/Veer376/chatgpt-local-system">GitHub</a><a href="https://github.com/Veer376/chatgpt-local-system/blob/main/CONTRIBUTING.md">Contribute</a><a href="https://github.com/Veer376/chatgpt-local-system/blob/main/SECURITY.md">Security</a></div>
+  </footer>
+
+  <script src="./site.js"></script>
+</body>
+</html>
