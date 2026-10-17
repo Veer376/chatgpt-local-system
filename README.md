@@ -18,12 +18,10 @@
 </div>
 
 <p align="center">
-  <a href="assets/demo/local-system-demo.mp4">
-    <img src="assets/demo/local-system-demo-poster.png" alt="Watch the 32-second Local System product demo" width="1000" />
-  </a>
+  <img src="assets/demo/local-system-demo-inline.gif" alt="32-second Local System product demo showing the product workflow in motion" width="360" />
 </p>
 
-<p align="center"><strong>▶ Watch the 32-second product demo</strong></p>
+<p align="center"><strong>32-second product demo · plays directly in the README</strong><br /><a href="assets/demo/local-system-demo.mp4">Open the full-quality MP4 ↗</a></p>
 
 ---
 
