@@ -17,6 +17,14 @@
   </p>
 </div>
 
+<p align="center">
+  <a href="assets/demo/local-system-demo.mp4">
+    <img src="assets/demo/local-system-demo-poster.png" alt="Watch the 32-second Local System product demo" width="1000" />
+  </a>
+</p>
+
+<p align="center"><strong>▶ Watch the 32-second product demo</strong></p>
+
 ---
 
 ## See the work. Stay in control.
